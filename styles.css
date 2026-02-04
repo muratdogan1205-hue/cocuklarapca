@@ -1,0 +1,454 @@
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Fredoka:wght@400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: 'Fredoka', 'Segoe UI', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    background: linear-gradient(180deg, #87CEEB 0%, #E0F7FA 100%);
+}
+
+/* --- ORTAK EKRAN STİLLERİ --- */
+.screen {
+    display: none;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.screen.active {
+    display: flex;
+}
+
+.arabic-text {
+    font-family: 'Amiri', serif;
+    direction: rtl;
+}
+
+h1 {
+    color: #2E7D32;
+    text-shadow: 2px 2px 0px #fff;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 2.5rem;
+}
+
+.btn {
+    background: #FF9800;
+    color: white;
+    border: 4px solid #F57C00;
+    border-radius: 20px;
+    padding: 15px 30px;
+    font-size: 1.5rem;
+    margin: 10px;
+    cursor: pointer;
+    font-family: 'Fredoka', sans-serif;
+    transition: transform 0.2s, background 0.2s;
+    box-shadow: 0 5px 0 #E65100;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 1px 0 #E65100;
+}
+
+.btn:hover {
+    background: #FB8C00;
+}
+
+.home-btn {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1000;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    font-size: 2rem;
+    padding: 0;
+    justify-content: center;
+    background: #fff;
+    color: #333;
+    border-color: #ddd;
+    box-shadow: 0 4px 0 #ccc;
+}
+
+/* --- ANA MENÜ --- */
+#main-menu {
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="90" font-size="80">🌿</text></svg>') 0 0/100px 100px repeat-x bottom,
+        linear-gradient(180deg, #b9fbc0 0%, #fbf8cc 100%);
+    background-repeat: repeat-x, no-repeat;
+    background-position: bottom, center;
+}
+
+.menu-title-container {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 30px;
+    margin-bottom: 30px;
+    border: 5px solid #81C784;
+    text-align: center;
+}
+
+/* --- OYUN 1: KARTLAR --- */
+#game-memory {
+    background-color: #FFF3E0;
+    background-image: radial-gradient(#FFCC80 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+}
+
+.card {
+    background: white;
+    border-radius: 20px;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+    position: relative;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.card.flipped {
+    transform: rotateY(180deg);
+}
+
+.card.matched {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.card .front,
+.card .back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    overflow: hidden;
+    border: 4px solid white;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card .front {
+    background: #fff;
+    transform: rotateY(180deg);
+    color: #333;
+}
+
+.card .back {
+    background: linear-gradient(135deg, #FF6F00 25%, transparent 25%) -50px 0,
+        linear-gradient(225deg, #FF6F00 25%, transparent 25%) -50px 0,
+        linear-gradient(315deg, #FF6F00 25%, transparent 25%),
+        linear-gradient(45deg, #FF6F00 25%, transparent 25%);
+    background-size: 40px 40px;
+    background-color: #FF8F00;
+    color: white;
+    font-size: 3rem;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+}
+
+/* --- OYUN 2: DİNLE BUL --- */
+#game-listening {
+    background-color: #E1F5FE;
+}
+
+.speech-bubble {
+    background: white;
+    padding: 20px 40px;
+    border-radius: 50px;
+    position: relative;
+    margin-bottom: 50px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-size: 2rem;
+}
+
+.speech-bubble:after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 20px solid transparent;
+    border-top-color: white;
+}
+
+.animals-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.animal-option {
+    font-size: 5rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+    filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.2));
+}
+
+.animal-option:hover {
+    transform: scale(1.2);
+}
+
+/* --- OYUN 3: RENKLER ORMANI --- */
+#game-colors {
+    background: linear-gradient(180deg, #F0F4C3 0%, #DCEDC8 100%);
+    overflow: hidden;
+    position: relative;
+}
+
+.target-color-display {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 1.2rem;
+    border: 3px solid #333;
+    z-index: 100;
+}
+
+.flying-object {
+    position: absolute;
+    font-size: 4rem;
+    cursor: pointer;
+    animation: float linear forwards;
+    bottom: -100px;
+}
+
+@keyframes float {
+    to {
+        bottom: 120vh;
+    }
+}
+
+/* Animasyonlar */
+.pop-anim {
+    animation: pop 0.3s ease-out forwards;
+}
+
+@keyframes pop {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+.feedback-text {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 4rem;
+    color: #FFD700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+    z-index: 2000;
+    display: none;
+}
+
+/* --- ÖĞRENME MODU --- */
+#learn-screen {
+    background: linear-gradient(180deg, #E8EAF6 0%, #C5CAE9 100%);
+    overflow-y: auto;
+    padding-top: 80px;
+    padding-bottom: 40px;
+}
+
+.learn-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    width: 100%;
+    max-width: 700px;
+    padding: 20px;
+}
+
+.learn-card {
+    background: white;
+    border-radius: 20px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 3px solid #7986CB;
+}
+
+.learn-card:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+}
+
+.learn-card:active {
+    transform: scale(0.97);
+}
+
+.learn-card .emoji {
+    font-size: 3rem;
+    margin-bottom: 5px;
+}
+
+.learn-card .ar-text {
+    font-family: 'Amiri', serif;
+    font-size: 1.8rem;
+    color: #3949AB;
+    direction: rtl;
+}
+
+.learn-card .okunus {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 2px;
+}
+
+.learn-card .tr-text {
+    font-size: 0.8rem;
+    color: #999;
+    margin-top: 3px;
+}
+
+.learn-section-title {
+    font-size: 1.5rem;
+    color: #3949AB;
+    margin: 20px 0 10px 0;
+    text-align: center;
+    width: 100%;
+}
+
+/* Aşama Seçim Ekranı */
+#stage-select {
+    background: linear-gradient(180deg, #E8EAF6 0%, #C5CAE9 100%);
+    overflow-y: auto;
+    padding-top: 80px;
+    padding-bottom: 40px;
+}
+
+.stage-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+}
+
+.stage-btn {
+    background: linear-gradient(135deg, #7C4DFF 0%, #536DFE 100%);
+    color: white;
+    border: none;
+    border-radius: 15px;
+    padding: 15px 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 15px rgba(124, 77, 255, 0.3);
+}
+
+.stage-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(124, 77, 255, 0.4);
+}
+
+.stage-btn:active {
+    transform: scale(0.95);
+}
+
+/* Ses Butonu */
+.sound-btn {
+    background: #4CAF50;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.sound-btn:hover {
+    background: #66BB6A;
+    transform: scale(1.1);
+}
+
+.sound-btn:active {
+    transform: scale(0.9);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .stage-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .grid-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .card {
+        height: 80px;
+        font-size: 2rem;
+    }
+
+    .animal-option {
+        font-size: 4rem;
+    }
+
+    .learn-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .learn-card .emoji {
+        font-size: 2.5rem;
+    }
+
+    .learn-card .ar-text {
+        font-size: 1.4rem;
+    }
+}
