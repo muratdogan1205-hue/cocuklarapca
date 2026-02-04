@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>🦁 Kelime Avcısı: Gizemli Bahçe 🌴</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+</head>
+
+<body>
+
+    <!-- Geri Tuşu -->
+    <button class="btn home-btn" onclick="goHome()" id="home-btn" style="display: none;">🏠</button>
+
+    <!-- Feedback Hazır -->
+    <div id="feedback" class="feedback-text">Harika! 🌟</div>
+
+    <!-- EKRAN 1: ANA MENÜ -->
+    <div id="main-menu" class="screen active">
+        <div class="menu-title-container">
+            <h1 style="margin:0;">🌴 Kelime Avcısı 🦁</h1>
+            <p style="font-size: 1.2rem; color: #555;">Gizemli Bahçe'ye Hoşgeldin!</p>
+        </div>
+
+        <button class="btn" style="background: #FF9800; border-color: #F57C00; font-size: 1.5rem; padding: 20px;"
+            onclick="showScreen('stage-select')">
+            <span>🚀</span> Oyuna Başla
+        </button>
+    </div>
+
+    <!-- EKRAN 2: HAFIZA OYUNU -->
+    <div id="game-memory" class="screen">
+        <h1>Eşleştirme Kartları 🃏</h1>
+        <p style="margin-bottom: 20px; font-size: 1.2rem;">Resmi Arapça ismiyle eşleştir!</p>
+        <div class="grid-container" id="memory-grid">
+            <!-- Kartlar JS ile gelecek -->
+        </div>
+    </div>
+
+    <!-- EKRAN 3: DİNLEME OYUNU -->
+    <div id="game-listening" class="screen">
+        <div class="speech-bubble" id="listening-text">
+            Ben kimim?<br>
+            <span class="arabic-text" style="color: #0288D1; font-size: 2.5rem;">???</span>
+        </div>
+        <div class="animals-container" id="listening-options">
+            <!-- Hayvanlar JS ile gelecek -->
+        </div>
+    </div>
+
+    <!-- EKRAN 4: RENKLER OYUNU -->
+    <div id="game-colors" class="screen">
+        <div class="target-color-display" id="color-target-display">
+            Hedef: <span id="target-word" class="arabic-text" style="font-weight:bold; color:red;">أحمر</span> (Ahmar)
+        </div>
+        <!-- Balonlar JS ile uçacak -->
+    </div>
+
+    <!-- EKRAN 5: AŞAMA SEÇİM -->
+    <div id="stage-select" class="screen">
+        <h1 style="margin-top: 0;">📖 Aşama Seç</h1>
+        <p style="color: #555; margin-bottom: 10px;">Her aşamada 20 kelime var!</p>
+        <div class="stage-grid" id="stage-grid">
+            <!-- Aşamalar JS ile gelecek -->
+        </div>
+    </div>
+
+    <!-- EKRAN 5.5: AŞAMA PANELİ (Oyun/Etkinlik Seçimi) -->
+    <div id="stage-dashboard" class="screen">
+        <div class="menu-title-container">
+            <h1 style="margin:0;" id="dashboard-title">Aşama X</h1>
+            <p style="font-size: 1.2rem; color: #555;">Ne yapmak istersin?</p>
+        </div>
+
+        <button class="btn" style="background: #9C27B0; border-color: #7B1FA2;" onclick="startLearningMode()">
+            <span>📖</span> Kelimeleri Öğren
+        </button>
+        <button class="btn" onclick="startMemoryGame()">
+            <span>🃏</span> Eşleştirme Kartları
+        </button>
+        <button class="btn" style="background: #00BCD4; border-color: #0097A7;" onclick="startListeningGame()">
+            <span>👂</span> Dinle ve Bul
+        </button>
+        <button class="btn" style="background: #8BC34A; border-color: #689F38;" onclick="startBalloonGame()">
+            <span>🎈</span> Renkler Ormanı
+        </button>
+
+        <div style="margin-top:20px;">
+            <button class="btn" style="background: #607D8B; border-color: #455A64; font-size: 1rem; padding: 10px 20px;"
+                onclick="showScreen('stage-select')">🔙 Başka Aşama Seç</button>
+        </div>
+    </div>
+
+    <!-- EKRAN 6: ÖĞRENME MODU -->
+    <div id="learn-screen" class="screen">
+        <h1 style="margin-top: 0;" id="learn-title">📖 Aşama 1</h1>
+        <p style="color: #555; margin-bottom: 10px;">🔊 butonuna tıkla ve dinle!</p>
+        <div id="learn-content">
+            <!-- İçerik JS ile gelecek -->
+        </div>
+    </div>
+
+    <!-- Harici JavaScript dosyaları -->
+    <script src="arabic-words-data.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
