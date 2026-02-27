@@ -610,8 +610,10 @@ let bouncingObjects = [];
 let rafId = null;
 let targetBalloonItem = null;
 let balloonCorrectCount = 0;
-let balloonTotalTargets = 5;
+let balloonTotalTargets = 10;
 let activeBalloonWords = []; // Sadece ekrandaki kelimeler
+let balloonTimerInterval = null;
+let balloonTime = 0;
 
 function startBalloonGame() {
     playClickSound();
@@ -638,6 +640,22 @@ function startBalloonGame() {
     // Hedef belirle (balonlar spawn edildikten SONRA!)
     setNewBalloonTarget();
 
+    // Timer'ı başlat
+    balloonTime = 0;
+    const timerDisplay = document.getElementById('balloon-timer');
+    if (timerDisplay) {
+        timerDisplay.style.display = 'block';
+        timerDisplay.textContent = `Süre: ${balloonTime}`;
+    }
+
+    if (balloonTimerInterval) clearInterval(balloonTimerInterval);
+    balloonTimerInterval = setInterval(() => {
+        balloonTime++;
+        if (timerDisplay) {
+            timerDisplay.textContent = `Süre: ${balloonTime}`;
+        }
+    }, 1000);
+
     // Animation loop başlat
     if (rafId) cancelAnimationFrame(rafId);
     animateBouncingObjects();
@@ -645,6 +663,14 @@ function startBalloonGame() {
 
 function stopBalloonGame() {
     if (rafId) cancelAnimationFrame(rafId);
+    if (balloonTimerInterval) {
+        clearInterval(balloonTimerInterval);
+        balloonTimerInterval = null;
+    }
+    const timerDisplay = document.getElementById('balloon-timer');
+    if (timerDisplay) {
+        timerDisplay.style.display = 'none';
+    }
     bouncingObjects.forEach(obj => obj.element.remove());
     bouncingObjects = [];
 }
