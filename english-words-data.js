@@ -1,0 +1,74 @@
+// İngilizce Kelime Verileri - 5 Kategori
+const englishWords = [
+    // Aile (s: 3)
+    { ar: 'Father', ok: 'Fader', tr: 'Baba', s: 3, e: '👨‍👦' },
+    { ar: 'Mother', ok: 'Mader', tr: 'Anne', s: 3, e: '👩‍👧' },
+    { ar: 'Son', ok: 'San', tr: 'Oğul', s: 3, e: '👨‍👦' },
+    { ar: 'Daughter', ok: 'Doter', tr: 'Kız', s: 3, e: '👧' },
+    { ar: 'Brother', ok: 'Brader', tr: 'Erkek Kardeş', s: 3, e: '👦' },
+    { ar: 'Sister', ok: 'Sister', tr: 'Kız Kardeş', s: 3, e: '👩‍❤️‍👩' },
+    { ar: 'Grandfather', ok: 'Grendfader', tr: 'Dede', s: 3, e: '👴' },
+    { ar: 'Grandmother', ok: 'Grendmader', tr: 'Nine', s: 3, e: '👵' },
+    { ar: 'Baby', ok: 'Beybi', tr: 'Bebek', s: 3, e: '👶' },
+    { ar: 'Family', ok: 'Femili', tr: 'Aile', s: 3, e: '👨‍👩‍👧‍👦' },
+
+    // Renkler (s: 4)
+    { ar: 'Red', ok: 'Red', tr: 'Kırmızı', s: 4, e: '🔴' },
+    { ar: 'Blue', ok: 'Blu', tr: 'Mavi', s: 4, e: '🔵' },
+    { ar: 'Yellow', ok: 'Yelou', tr: 'Sarı', s: 4, e: '🟡' },
+    { ar: 'Green', ok: 'Grin', tr: 'Yeşil', s: 4, e: '🟢' },
+    { ar: 'Orange', ok: 'Orinc', tr: 'Turuncu', s: 4, e: '🟠' },
+    { ar: 'Purple', ok: 'Pörpıl', tr: 'Mor', s: 4, e: '🟣' },
+    { ar: 'Pink', ok: 'Pink', tr: 'Pembe', s: 4, e: '<span style="color:#FF007F">⬤</span>' },
+    { ar: 'Black', ok: 'Blek', tr: 'Siyah', s: 4, e: '⚫' },
+    { ar: 'White', ok: 'Vayt', tr: 'Beyaz', s: 4, e: '⚪' },
+    { ar: 'Brown', ok: 'Braun', tr: 'Kahverengi', s: 4, e: '🟤' },
+
+    // Hayvanlar 1 (s: 5)
+    { ar: 'Cat', ok: 'Ket', tr: 'Kedi', s: 5, e: '🐱' },
+    { ar: 'Dog', ok: 'Dog', tr: 'Köpek', s: 5, e: '🐶' },
+    { ar: 'Bird', ok: 'Börd', tr: 'Kuş', s: 5, e: '🐦' },
+    { ar: 'Fish', ok: 'Fiş', tr: 'Balık', s: 5, e: '🐟' },
+    { ar: 'Lion', ok: 'Layın', tr: 'Aslan', s: 5, e: '🦁' },
+    { ar: 'Elephant', ok: 'Elefınt', tr: 'Fil', s: 5, e: '🐘' },
+    { ar: 'Monkey', ok: 'Manki', tr: 'Maymun', s: 5, e: '🐵' },
+    { ar: 'Rabbit', ok: 'Rebit', tr: 'Tavşan', s: 5, e: '🐰' },
+    { ar: 'Bear', ok: 'Ber', tr: 'Ayı', s: 5, e: '🐻' },
+    { ar: 'Horse', ok: 'Hors', tr: 'At', s: 5, e: '🐴' },
+
+    // Hayvanlar 2 (s: 6)
+    { ar: 'Cow', ok: 'Kau', tr: 'İnek', s: 6, e: '🐄' },
+    { ar: 'Sheep', ok: 'Şip', tr: 'Koyun', s: 6, e: '🐑' },
+    { ar: 'Chicken', ok: 'Çikın', tr: 'Tavuk', s: 6, e: '🐔' },
+    { ar: 'Duck', ok: 'Dak', tr: 'Ördek', s: 6, e: '🦆' },
+    { ar: 'Butterfly', ok: 'Batırflay', tr: 'Kelebek', s: 6, e: '🦋' },
+    { ar: 'Frog', ok: 'Frog', tr: 'Kurbağa', s: 6, e: '🐸' },
+    { ar: 'Turtle', ok: 'Törtıl', tr: 'Kaplumbağa', s: 6, e: '🐢' },
+    { ar: 'Giraffe', ok: 'Ciraf', tr: 'Zürafa', s: 6, e: '🦒' },
+    { ar: 'Zebra', ok: 'Zebra', tr: 'Zebra', s: 6, e: '🦓' },
+    { ar: 'Penguin', ok: 'Penguin', tr: 'Penguen', s: 6, e: '🐧' },
+
+    // Meyveler (s: 7)
+    { ar: 'Apple', ok: 'Epıl', tr: 'Elma', s: 7, e: '🍎' },
+    { ar: 'Banana', ok: 'Bınana', tr: 'Muz', s: 7, e: '🍌' },
+    { ar: 'Orange', ok: 'Orinc', tr: 'Portakal', s: 7, e: '🍊' },
+    { ar: 'Strawberry', ok: 'Stroberi', tr: 'Çilek', s: 7, e: '🍓' },
+    { ar: 'Grapes', ok: 'Greyps', tr: 'Üzüm', s: 7, e: '🍇' },
+    { ar: 'Watermelon', ok: 'Votermelın', tr: 'Karpuz', s: 7, e: '🍉' },
+    { ar: 'Lemon', ok: 'Lemın', tr: 'Limon', s: 7, e: '🍋' },
+    { ar: 'Cherry', ok: 'Çeri', tr: 'Kiraz', s: 7, e: '🍒' },
+    { ar: 'Peach', ok: 'Piç', tr: 'Şeftali', s: 7, e: '🍑' },
+    { ar: 'Pear', ok: 'Per', tr: 'Armut', s: 7, e: '🍐' },
+
+    // Sayılar (s: 2)
+    { ar: 'One', ok: 'Van', tr: 'Bir', s: 2, e: '1️⃣' },
+    { ar: 'Two', ok: 'Tu', tr: 'İki', s: 2, e: '2️⃣' },
+    { ar: 'Three', ok: 'Thri', tr: 'Üç', s: 2, e: '3️⃣' },
+    { ar: 'Four', ok: 'For', tr: 'Dört', s: 2, e: '4️⃣' },
+    { ar: 'Five', ok: 'Fayv', tr: 'Beş', s: 2, e: '5️⃣' },
+    { ar: 'Six', ok: 'Siks', tr: 'Altı', s: 2, e: '6️⃣' },
+    { ar: 'Seven', ok: 'Sevın', tr: 'Yedi', s: 2, e: '7️⃣' },
+    { ar: 'Eight', ok: 'Eyt', tr: 'Sekiz', s: 2, e: '8️⃣' },
+    { ar: 'Nine', ok: 'Nayn', tr: 'Dokuz', s: 2, e: '9️⃣' },
+    { ar: 'Ten', ok: 'Ten', tr: 'On', s: 2, e: '🔟' }
+];
