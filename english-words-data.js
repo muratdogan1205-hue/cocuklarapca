@@ -1,16 +1,16 @@
 // İngilizce Kelime Verileri - 5 Kategori
 const englishWords = [
     // Aile (s: 3)
-    { ar: 'Father', ok: 'Fader', tr: 'Baba', s: 3, e: '👨‍👦' },
-    { ar: 'Mother', ok: 'Mader', tr: 'Anne', s: 3, e: '👩‍👧' },
-    { ar: 'Son', ok: 'San', tr: 'Oğul', s: 3, e: '👨‍👦' },
+    { ar: 'Father', ok: 'Fader', tr: 'Baba', s: 3, e: '👨' },
+    { ar: 'Mother', ok: 'Mader', tr: 'Anne', s: 3, e: '👩' },
+    { ar: 'Son', ok: 'San', tr: 'Oğul', s: 3, e: '👦' },
     { ar: 'Daughter', ok: 'Doter', tr: 'Kız', s: 3, e: '👧' },
     { ar: 'Brother', ok: 'Brader', tr: 'Erkek Kardeş', s: 3, e: '👦' },
-    { ar: 'Sister', ok: 'Sister', tr: 'Kız Kardeş', s: 3, e: '👩‍❤️‍👩' },
+    { ar: 'Sister', ok: 'Sister', tr: 'Kız Kardeş', s: 3, e: '👩' },
     { ar: 'Grandfather', ok: 'Grendfader', tr: 'Dede', s: 3, e: '👴' },
     { ar: 'Grandmother', ok: 'Grendmader', tr: 'Nine', s: 3, e: '👵' },
     { ar: 'Baby', ok: 'Beybi', tr: 'Bebek', s: 3, e: '👶' },
-    { ar: 'Family', ok: 'Femili', tr: 'Aile', s: 3, e: '👨‍👩‍👧‍👦' },
+    { ar: 'Family', ok: 'Femili', tr: 'Aile', s: 3, e: '🏠' },
 
     // Renkler (s: 4)
     { ar: 'Red', ok: 'Red', tr: 'Kırmızı', s: 4, e: '🔴' },

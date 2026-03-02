@@ -559,7 +559,7 @@ function checkMatch() {
 // --- OYUN 2: DİNLE VE BUL ---
 let currentQuestionItem = null;
 let listeningCorrectCount = 0;
-let listeningTotalQuestions = 5;
+let listeningTotalQuestions = 10;
 
 function startListeningGame() {
     playClickSound();

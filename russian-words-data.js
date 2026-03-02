@@ -1,16 +1,16 @@
 // Rusça Kelime Verileri - 5 Kategori
 const russianWords = [
     // Aile (s: 3)
-    { ar: 'Отец', ok: 'Otets', tr: 'Baba', s: 3, e: '👨‍👦' },
-    { ar: 'Мать', ok: 'Mat', tr: 'Anne', s: 3, e: '👩‍👧' },
-    { ar: 'Сын', ok: 'Sın', tr: 'Oğul', s: 3, e: '👨‍👦' },
+    { ar: 'Отец', ok: 'Otets', tr: 'Baba', s: 3, e: '👨' },
+    { ar: 'Мать', ok: 'Mat', tr: 'Anne', s: 3, e: '👩' },
+    { ar: 'Сын', ok: 'Sın', tr: 'Oğul', s: 3, e: '👦' },
     { ar: 'Дочь', ok: 'Doç', tr: 'Kız', s: 3, e: '👧' },
     { ar: 'Брат', ok: 'Brat', tr: 'Erkek Kardeş', s: 3, e: '👦' },
-    { ar: 'Сестра', ok: 'Kız Kardeş', tr: 'Sestra', s: 3, e: '👩‍❤️‍👩' },
+    { ar: 'Сестра', ok: 'Kız Kardeş', tr: 'Sestra', s: 3, e: '👩' },
     { ar: 'Дедушка', ok: 'Deduşka', tr: 'Dede', s: 3, e: '👴' },
     { ar: 'Бабушка', ok: 'Babuška', tr: 'Nine', s: 3, e: '👵' },
     { ar: 'Ребенок', ok: 'Rebönok', tr: 'Bebek', s: 3, e: '👶' },
-    { ar: 'Семья', ok: 'Semya', tr: 'Aile', s: 3, e: '👨‍👩‍👧‍👦' },
+    { ar: 'Семья', ok: 'Semya', tr: 'Aile', s: 3, e: '🏠' },
 
     // Renkler (s: 4)
     { ar: 'Красный', ok: 'Krasnıy', tr: 'Kırmızı', s: 4, e: '🔴' },

@@ -1,16 +1,16 @@
 // Almanca Kelime Verileri - 5 Kategori
 const germanWords = [
     // Aile (s: 3)
-    { ar: 'Vater', ok: 'Fater', tr: 'Baba', s: 3, e: '👨‍👦' },
-    { ar: 'Mutter', ok: 'Muter', tr: 'Anne', s: 3, e: '👩‍👧' },
-    { ar: 'Sohn', ok: 'Zon', tr: 'Oğul', s: 3, e: '👨‍👦' },
+    { ar: 'Vater', ok: 'Fater', tr: 'Baba', s: 3, e: '👨' },
+    { ar: 'Mutter', ok: 'Muter', tr: 'Anne', s: 3, e: '👩' },
+    { ar: 'Sohn', ok: 'Zon', tr: 'Oğul', s: 3, e: '👦' },
     { ar: 'Tochter', ok: 'Tohter', tr: 'Kız', s: 3, e: '👧' },
     { ar: 'Bruder', ok: 'Bruder', tr: 'Erkek Kardeş', s: 3, e: '👦' },
-    { ar: 'Schwester', ok: 'Şvester', tr: 'Kız Kardeş', s: 3, e: '👩‍❤️‍👩' },
+    { ar: 'Schwester', ok: 'Şvester', tr: 'Kız Kardeş', s: 3, e: '👩' },
     { ar: 'Großvater', ok: 'Grosfater', tr: 'Dede', s: 3, e: '👴' },
     { ar: 'Großmutter', ok: 'Grosmuter', tr: 'Nine', s: 3, e: '👵' },
     { ar: 'Baby', ok: 'Beybi', tr: 'Bebek', s: 3, e: '👶' },
-    { ar: 'Familie', ok: 'Familie', tr: 'Aile', s: 3, e: '👨‍👩‍👧‍👦' },
+    { ar: 'Familie', ok: 'Familie', tr: 'Aile', s: 3, e: '🏠' },
 
     // Renkler (s: 4)
     { ar: 'Rot', ok: 'Rot', tr: 'Kırmızı', s: 4, e: '🔴' },
