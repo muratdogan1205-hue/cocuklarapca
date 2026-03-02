@@ -70,5 +70,27 @@ const germanWords = [
     { ar: 'Sieben', ok: 'Ziben', tr: 'Yedi', s: 2, e: '7️⃣' },
     { ar: 'Acht', ok: 'Aht', tr: 'Sekiz', s: 2, e: '8️⃣' },
     { ar: 'Neun', ok: 'Noyn', tr: 'Dokuz', s: 2, e: '9️⃣' },
-    { ar: 'Zehn', ok: 'Tsen', tr: 'On', s: 2, e: '🔟' }
+    { ar: 'Zehn', ok: 'Tsen', tr: 'On', s: 2, e: '🔟' },
+
+    // Şekiller (s: 21)
+    { ar: 'Kreis', ok: 'Krays', tr: 'Daire', s: 21, e: '⭕' },
+    { ar: 'Quadrat', ok: 'Kvadrat', tr: 'Kare', s: 21, e: '⬜' },
+    { ar: 'Dreieck', ok: 'Drayek', tr: 'Üçgen', s: 21, e: '🔺' },
+    { ar: 'Rechteck', ok: 'Rehtek', tr: 'Dikdörtgen', s: 21, e: '▬' },
+    { ar: 'Stern', ok: 'Ştern', tr: 'Yıldız', s: 21, e: '⭐' },
+    { ar: 'Herz', ok: 'Herts', tr: 'Kalp', s: 21, e: '❤️' },
+    { ar: 'Linie', ok: 'Liniye', tr: 'Çizgi', s: 21, e: '➖' },
+    { ar: 'Punkt', ok: 'Punkt', tr: 'Nokta', s: 21, e: '•' },
+
+    // Mutfak (s: 22)
+    { ar: 'Teller', ok: 'Teler', tr: 'Tabak', s: 22, e: '🍽️' },
+    { ar: 'Glas', ok: 'Glas', tr: 'Bardak', s: 22, e: '🥛' },
+    { ar: 'Löffel', ok: 'Löfel', tr: 'Kaşık', s: 22, e: '🥄' },
+    { ar: 'Gabel', ok: 'Gabel', tr: 'Çatal', s: 22, e: '🍴' },
+    { ar: 'Messer', ok: 'Meser', tr: 'Bıçak', s: 22, e: '🔪' },
+    { ar: 'Topf', ok: 'Topf', tr: 'Tencere', s: 22, e: '🍲' },
+    { ar: 'Pfanne', ok: 'Pfane', tr: 'Tava', s: 22, e: '🍳' },
+    { ar: 'Schüssel', ok: 'Şüsel', tr: 'Kase', s: 22, e: '🥣' },
+    { ar: 'Tasse', ok: 'Tase', tr: 'Fincan', s: 22, e: '☕' },
+    { ar: 'Ofen', ok: 'Ofen', tr: 'Fırın', s: 22, e: '♨️' }
 ];

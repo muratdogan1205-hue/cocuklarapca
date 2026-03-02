@@ -70,5 +70,27 @@ const englishWords = [
     { ar: 'Seven', ok: 'Sevın', tr: 'Yedi', s: 2, e: '7️⃣' },
     { ar: 'Eight', ok: 'Eyt', tr: 'Sekiz', s: 2, e: '8️⃣' },
     { ar: 'Nine', ok: 'Nayn', tr: 'Dokuz', s: 2, e: '9️⃣' },
-    { ar: 'Ten', ok: 'Ten', tr: 'On', s: 2, e: '🔟' }
+    { ar: 'Ten', ok: 'Ten', tr: 'On', s: 2, e: '🔟' },
+
+    // Şekiller (s: 21)
+    { ar: 'Circle', ok: 'Sörkıl', tr: 'Daire', s: 21, e: '⭕' },
+    { ar: 'Square', ok: 'Skweyr', tr: 'Kare', s: 21, e: '⬜' },
+    { ar: 'Triangle', ok: 'Trayengıl', tr: 'Üçgen', s: 21, e: '🔺' },
+    { ar: 'Rectangle', ok: 'Rektengıl', tr: 'Dikdörtgen', s: 21, e: '▬' },
+    { ar: 'Star', ok: 'Star', tr: 'Yıldız', s: 21, e: '⭐' },
+    { ar: 'Heart', ok: 'Hart', tr: 'Kalp', s: 21, e: '❤️' },
+    { ar: 'Line', ok: 'Layn', tr: 'Çizgi', s: 21, e: '➖' },
+    { ar: 'Dot', ok: 'Dot', tr: 'Nokta', s: 21, e: '•' },
+
+    // Mutfak (s: 22)
+    { ar: 'Plate', ok: 'Pleyt', tr: 'Tabak', s: 22, e: '🍽️' },
+    { ar: 'Glass', ok: 'Gles', tr: 'Bardak', s: 22, e: '🥛' },
+    { ar: 'Spoon', ok: 'Spun', tr: 'Kaşık', s: 22, e: '🥄' },
+    { ar: 'Fork', ok: 'Fork', tr: 'Çatal', s: 22, e: '🍴' },
+    { ar: 'Knife', ok: 'Nayf', tr: 'Bıçak', s: 22, e: '🔪' },
+    { ar: 'Pot', ok: 'Pot', tr: 'Tencere', s: 22, e: '🍲' },
+    { ar: 'Pan', ok: 'Pen', tr: 'Tava', s: 22, e: '🍳' },
+    { ar: 'Bowl', ok: 'Boul', tr: 'Kase', s: 22, e: '🥣' },
+    { ar: 'Cup', ok: 'Kap', tr: 'Fincan', s: 22, e: '☕' },
+    { ar: 'Oven', ok: 'Oven', tr: 'Fırın', s: 22, e: '♨️' }
 ];

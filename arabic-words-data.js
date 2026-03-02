@@ -79,14 +79,14 @@ const arabicWords = [
     { ar: 'بني', ok: 'Bunniy', tr: 'Kahverengi', s: 4, e: '🟤' },
     { ar: 'رمادي', ok: 'Ramadiy', tr: 'Gri', s: 4, e: '🩶' },
     { ar: 'ذهبي', ok: 'Zehabiy', tr: 'Altın', s: 4, e: '🥇' },
-    { ar: 'دائرة', ok: 'Daire', tr: 'Daire', s: 4, e: '⭕' },
-    { ar: 'مربع', ok: 'Murabba', tr: 'Kare', s: 4, e: '⬜' },
-    { ar: 'مثلث', ok: 'Muselles', tr: 'Üçgen', s: 4, e: '🔺' },
-    { ar: 'مستطيل', ok: 'Mustatil', tr: 'Dikdörtgen', s: 4, e: '▬' },
-    { ar: 'نجمة', ok: 'Necme', tr: 'Yıldız', s: 4, e: '⭐' },
-    { ar: 'قلب', ok: 'Kalb', tr: 'Kalp', s: 4, e: '❤️' },
-    { ar: 'خط', ok: 'Hatt', tr: 'Çizgi', s: 4, e: '➖' },
-    { ar: 'نقطة', ok: 'Nukta', tr: 'Nokta', s: 4, e: '•' },
+    { ar: 'دائرة', ok: 'Daire', tr: 'Daire', s: 21, e: '⭕' },
+    { ar: 'مربع', ok: 'Murabba', tr: 'Kare', s: 21, e: '⬜' },
+    { ar: 'مثلث', ok: 'Muselles', tr: 'Üçgen', s: 21, e: '🔺' },
+    { ar: 'مستطيل', ok: 'Mustatil', tr: 'Dikdörtgen', s: 21, e: '▬' },
+    { ar: 'نجمة', ok: 'Necme', tr: 'Yıldız', s: 21, e: '⭐' },
+    { ar: 'قلب', ok: 'Kalb', tr: 'Kalp', s: 21, e: '❤️' },
+    { ar: 'خط', ok: 'Hatt', tr: 'Çizgi', s: 21, e: '➖' },
+    { ar: 'نقطة', ok: 'Nukta', tr: 'Nokta', s: 21, e: '•' },
 
     // AŞAMA 5: Hayvanlar 1
     { ar: 'قطة', ok: 'Kıtta', tr: 'Kedi', s: 5, e: '🐱' },
@@ -248,6 +248,18 @@ const arabicWords = [
     { ar: 'شمس', ok: 'Şems', tr: 'Güneş', s: 19, e: '☀️' }, { ar: 'قمر', ok: 'Kamer', tr: 'Ay', s: 19, e: '🌙' }, { ar: 'نجم', ok: 'Necm', tr: 'Yıldız', s: 19, e: '⭐' }, { ar: 'سماء', ok: 'Sema', tr: 'Gökyüzü', s: 19, e: '🌌' }, { ar: 'أرض', ok: 'Ard', tr: 'Dünya', s: 19, e: '🌍' }, { ar: 'بحر', ok: 'Bahr', tr: 'Deniz', s: 19, e: '🌊' }, { ar: 'نهر', ok: 'Nehr', tr: 'Nehir', s: 19, e: '🏞️' }, { ar: 'جبل', ok: 'Cebel', tr: 'Dağ', s: 19, e: '⛰️' }, { ar: 'غابة', ok: 'Ğabe', tr: 'Orman', s: 19, e: '🌲' }, { ar: 'صحراء', ok: 'Sahra', tr: 'Çöl', s: 19, e: '🏜️' }, { ar: 'شجرة', ok: 'Şecera', tr: 'Ağaç', s: 19, e: '🌳' }, { ar: 'زهرة', ok: 'Zehra', tr: 'Çiçek', s: 19, e: '🌸' }, { ar: 'عشب', ok: 'Uşb', tr: 'Çimen', s: 19, e: '🌱' }, { ar: 'ورقة', ok: 'Varaka', tr: 'Yaprak', s: 19, e: '🍃' }, { ar: 'حجر', ok: 'Hacer', tr: 'Taş', s: 19, e: '🪨' }, { ar: 'رمل', ok: 'Raml', tr: 'Kum', s: 19, e: '🏖️' }, { ar: 'ماء', ok: 'Ma', tr: 'Su', s: 19, e: '💧' }, { ar: 'هواء', ok: 'Heva', tr: 'Hava', s: 19, e: '💨' }, { ar: 'نار', ok: 'Nar', tr: 'Ateş', s: 19, e: '🔥' }, { ar: 'تراب', ok: 'Türab', tr: 'Toprak', s: 19, e: '🟫' },
 
     // AŞAMA 20: Doğa 2 - Hava Durumu
-    { ar: 'طقس', ok: 'Taks', tr: 'Hava durumu', s: 20, e: '🌤️' }, { ar: 'حار', ok: 'Har', tr: 'Sıcak', s: 20, e: '🥵' }, { ar: 'بارد', ok: 'Barid', tr: 'Soğuk', s: 20, e: '🥶' }, { ar: 'مطر', ok: 'Matar', tr: 'Yağmur', s: 20, e: '🌧️' }, { ar: 'ثلج', ok: 'Selc', tr: 'Kar', s: 20, e: '❄️' }, { ar: 'غيم', ok: 'Ğaym', tr: 'Bulut', s: 20, e: '☁️' }, { ar: 'رعد', ok: 'Rad', tr: 'Gök gürültüsü', s: 20, e: '⛈️' }, { ar: 'برق', ok: 'Bark', tr: 'Şimşek', s: 20, e: '⚡' }, { ar: 'رياح', ok: 'Riyah', tr: 'Rüzgar', s: 20, e: '💨' }, { ar: 'عاصفة', ok: 'Asıfa', tr: 'Fırtına', s: 20, e: '🌪️' }, { ar: 'ضباب', ok: 'Dabab', tr: 'Sis', s: 20, e: '🌫️' }, { ar: 'قوس قزح', ok: 'Kavs kuzah', tr: 'Gökkuşağı', s: 20, e: '🌈' }, { ar: 'جليد', ok: 'Celid', tr: 'Buz', s: 20, e: '🧊' }, { ar: 'ربيع', ok: 'Rebi', tr: 'İlkbahar', s: 20, e: '🌸' }, { ar: 'صيف', ok: 'Sayf', tr: 'Yaz', s: 20, e: '☀️' }, { ar: 'خريف', ok: 'Harif', tr: 'Sonbahar', s: 20, e: '🍂' }, { ar: 'شتاء', ok: 'Şita', tr: 'Kış', s: 20, e: '❄️' }, { ar: 'درجة حرارة', ok: 'Derece harare', tr: 'Sıcaklık', s: 20, e: '🌡️' }, { ar: 'رطوبة', ok: 'Rutube', tr: 'Nem', s: 20, e: '💦' }, { ar: 'مشمس', ok: 'Müşmis', tr: 'Güneşli', s: 20, e: '🌞' }
+    { ar: 'طقس', ok: 'Taks', tr: 'Hava durumu', s: 20, e: '🌤️' }, { ar: 'حار', ok: 'Har', tr: 'Sıcak', s: 20, e: '🥵' }, { ar: 'بارد', ok: 'Barid', tr: 'Soğuk', s: 20, e: '🥶' }, { ar: 'مطر', ok: 'Matar', tr: 'Yağmur', s: 20, e: '🌧️' }, { ar: 'ثلج', ok: 'Selc', tr: 'Kar', s: 20, e: '❄️' }, { ar: 'غيم', ok: 'Ğaym', tr: 'Bulut', s: 20, e: '☁️' }, { ar: 'رعد', ok: 'Rad', tr: 'Gök gürültüsü', s: 20, e: '⛈️' }, { ar: 'برق', ok: 'Bark', tr: 'Şimşek', s: 20, e: '⚡' }, { ar: 'رياح', ok: 'Riyah', tr: 'Rüzgar', s: 20, e: '💨' }, { ar: 'عاصفة', ok: 'Asıfa', tr: 'Fırtına', s: 20, e: '🌪️' }, { ar: 'ضباب', ok: 'Dabab', tr: 'Sis', s: 20, e: '🌫️' }, { ar: 'قوس قزح', ok: 'Kavs kuzah', tr: 'Gökkuşağı', s: 20, e: '🌈' }, { ar: 'جليد', ok: 'Celid', tr: 'Buz', s: 20, e: '🧊' }, { ar: 'ربيع', ok: 'Rebi', tr: 'İlkbahar', s: 20, e: '🌸' }, { ar: 'صيف', ok: 'Sayf', tr: 'Yaz', s: 20, e: '☀️' }, { ar: 'خريف', ok: 'Harif', tr: 'Sonbahar', s: 20, e: '🍂' }, { ar: 'شتاء', ok: 'Şita', tr: 'Kış', s: 20, e: '❄️' }, { ar: 'درجة حرارة', ok: 'Derece harare', tr: 'Sıcaklık', s: 20, e: '🌡️' }, { ar: 'رطوبة', ok: 'Rutube', tr: 'Nem', s: 20, e: '💦' }, { ar: 'مشمس', ok: 'Müşmis', tr: 'Güneşli', s: 20, e: '🌞' },
+
+    // Mutfak (s: 22)
+    { ar: 'طبق', ok: 'Tabak', tr: 'Tabak', s: 22, e: '🍽️' },
+    { ar: 'كأس', ok: 'Kaes', tr: 'Bardak', s: 22, e: '🥛' },
+    { ar: 'ملعقة', ok: 'Mılaka', tr: 'Kaşık', s: 22, e: '🥄' },
+    { ar: 'شوكة', ok: 'Şevke', tr: 'Çatal', s: 22, e: '🍴' },
+    { ar: 'سكين', ok: 'Sikkin', tr: 'Bıçak', s: 22, e: '🔪' },
+    { ar: 'قدر', ok: 'Kidr', tr: 'Tencere', s: 22, e: '🍲' },
+    { ar: 'مقلاة', ok: 'Mikla', tr: 'Tava', s: 22, e: '🍳' },
+    { ar: 'وعاء', ok: 'Vi\'a', tr: 'Kase', s: 22, e: '🥣' },
+    { ar: 'فنجان', ok: 'Fincan', tr: 'Fincan', s: 22, e: '☕' },
+    { ar: 'فرن', ok: 'Furn', tr: 'Fırın', s: 22, e: '♨️' }
 ];
 // Aşama 21-50 devam edecek

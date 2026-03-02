@@ -1828,6 +1828,14 @@ h1 {
     background: linear-gradient(135deg, #4FC3F7, #0288D1);
 }
 
+.style-shapes {
+    background: linear-gradient(135deg, #26A69A, #00695C);
+}
+
+.style-kitchen {
+    background: linear-gradient(135deg, #FF7043, #D84315);
+}
+
 /* Alt Buton (Dil Değiştir) */
 /* Alt Buton (Dil Değiştir) */
 .bottom-nav-btn {

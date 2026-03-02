@@ -305,7 +305,9 @@ const CATEGORY_STAGES = {
     colors: [4],      // Renkler
     fruits: [7],      // Meyveler/Yiyecekler
     family: [3],      // Aile
-    numbers: [2]      // Sayılar
+    numbers: [2],     // Sayılar
+    shapes: [21],     // Şekiller
+    kitchen: [22]     // Mutfak
 };
 
 const CATEGORY_NAMES = {
@@ -313,8 +315,21 @@ const CATEGORY_NAMES = {
     colors: '🌈 Renkler',
     fruits: '🍎 Meyveler',
     family: '👨‍👩‍👧 Aile',
-    numbers: '🔢 Sayılar'
+    numbers: '🔢 Sayılar',
+    shapes: '🔺 Şekiller',
+    kitchen: '🥣 Mutfak'
 };
+
+// --- İNTERNETTEN RESİM ÇEKME ---
+function getImageUrl(item) {
+    const seed = (item.tr.length * 5) + 123;
+    const prompt = `cute colorful cartoon ${encodeURIComponent(item.tr)} icon flat graphic simple white background`;
+    return `https://image.pollinations.ai/prompt/${prompt}?width=200&height=200&nologo=true&seed=${seed}`;
+}
+
+function renderImageElement(item) {
+    return `<img src="${getImageUrl(item)}" alt="${item.tr}" class="word-img" onerror="this.outerHTML='<div class=\\'emoji\\'>${item.e}</div>'" style="width:100%; height:100%; object-fit:contain; border-radius:10px;">`;
+}
 
 function selectCategory(category) {
     playClickSound();
@@ -417,32 +432,34 @@ function startLearningMode() {
     grid.className = 'learn-grid';
 
     currentStageWords.forEach(item => {
-        const card = createLearnCard(item.e, item.ar, item.ok, item.tr);
+        const card = createLearnCard(item);
         grid.appendChild(card);
     });
 
     container.appendChild(grid);
 }
 
-function createLearnCard(emoji, arText, okunus, trText) {
+function createLearnCard(item) {
     const card = document.createElement('div');
     card.className = 'learn-card';
     card.innerHTML = `
-        <div class="emoji">${emoji}</div>
-        <div class="ar-text">${arText}</div>
-        <div class="okunus">${okunus}</div>
-        <div class="tr-text">${trText}</div>
+        <div class="image-container" style="width: 120px; height: 120px; margin: 0 auto 10px auto;">
+            ${renderImageElement(item)}
+        </div>
+        <div class="ar-text">${item.ar}</div>
+        <div class="okunus">${item.ok}</div>
+        <div class="tr-text">${item.tr}</div>
         <button class="sound-btn">🔊</button>
     `;
 
     card.querySelector('.sound-btn').addEventListener('click', (e) => {
         e.stopPropagation();
         playClickSound();
-        speakWord(arText);
+        speakWord(item.ar);
     });
 
     // Karta tıklayınca da ses çalsın
-    card.addEventListener('click', () => speakWord(arText));
+    card.addEventListener('click', () => speakWord(item.ar));
 
     return card;
 }
@@ -476,7 +493,7 @@ function startMemoryGame() {
 
     let deck = [];
     selected.forEach(item => {
-        deck.push({ id: item.ar, type: 'emoji', content: item.e, data: item });
+        deck.push({ id: item.ar, type: 'emoji', content: `<div style="width: 100%; height: 100%; padding: 10px; box-sizing: border-box;">${renderImageElement(item)}</div>`, data: item });
         const textClass = selectedLanguage === 'arabic' ? 'arabic-text' : 'foreign-text';
         deck.push({ id: item.ar, type: 'text', content: `<div class="${textClass}">${item.ar}</div><div style="font-size:0.6em">${item.ok}</div>`, data: item });
     });
@@ -579,7 +596,10 @@ function nextListeningQuestion() {
     options.forEach(opt => {
         const el = document.createElement('div');
         el.className = 'animal-option';
-        el.innerHTML = opt.e;
+        el.style.width = '120px';
+        el.style.height = '120px';
+        el.style.padding = '10px';
+        el.innerHTML = renderImageElement(opt);
         el.onclick = () => {
             if (opt.ar === currentQuestionItem.ar) {
                 playCorrectSound();
@@ -691,7 +711,7 @@ function setNewBalloonTarget() {
     const targetDisplay = document.getElementById('color-target-display');
     const targetTextClass = selectedLanguage === 'arabic' ? 'arabic-text' : 'foreign-text';
     targetDisplay.innerHTML = `
-        <div style="font-size: 3rem; margin-bottom: 5px; text-align: center;">${targetBalloonItem.e}</div>
+        <div style="width: 100px; height: 100px; margin: 0 auto 5px auto;">${renderImageElement(targetBalloonItem)}</div>
         <div style="text-align: center;">
             Hedef: <span class="${targetTextClass}" style="font-weight:bold; color:red; font-size:1.6rem;">${targetBalloonItem.ar}</span> 
             <br><span style="font-size: 0.9rem; color: #555;">(${targetBalloonItem.ok})</span>
@@ -738,7 +758,9 @@ function spawnBouncingObject(wordItem) {
     const container = document.getElementById('game-colors');
     const el = document.createElement('div');
     el.className = 'bouncing-object';
-    el.innerHTML = wordItem.e;
+    el.style.width = '100px';
+    el.style.height = '100px';
+    el.innerHTML = renderImageElement(wordItem);
 
     // Rastgele başlangıç pozisyonu ve hız
     const obj = {
@@ -765,7 +787,6 @@ function handleBouncingClick(obj) {
         obj.element.classList.add('pop-anim');
         showFeedback("Yakaladın! ✨");
         addStar(1);
-        speakWord(obj.word.ar);
         balloonCorrectCount++;
 
         setTimeout(() => {

@@ -70,5 +70,27 @@ const russianWords = [
     { ar: 'Семь', ok: 'Sem', tr: 'Yedi', s: 2, e: '7️⃣' },
     { ar: 'Восемь', ok: 'Vosem', tr: 'Sekiz', s: 2, e: '8️⃣' },
     { ar: 'Девять', ok: 'Devyat', tr: 'Dokuz', s: 2, e: '9️⃣' },
-    { ar: 'Десять', ok: 'Desyat', tr: 'On', s: 2, e: '🔟' }
+    { ar: 'Десять', ok: 'Desyat', tr: 'On', s: 2, e: '🔟' },
+
+    // Şekiller (s: 21)
+    { ar: 'Круг', ok: 'Kruk', tr: 'Daire', s: 21, e: '⭕' },
+    { ar: 'Квадрат', ok: 'Kvadrat', tr: 'Kare', s: 21, e: '⬜' },
+    { ar: 'Треугольник', ok: 'Treugolnik', tr: 'Üçgen', s: 21, e: '🔺' },
+    { ar: 'Прямоугольник', ok: 'Pryamougolnik', tr: 'Dikdörtgen', s: 21, e: '▬' },
+    { ar: 'Звезда', ok: 'Zvezda', tr: 'Yıldız', s: 21, e: '⭐' },
+    { ar: 'Сердце', ok: 'Serdtse', tr: 'Kalp', s: 21, e: '❤️' },
+    { ar: 'Линия', ok: 'Liniya', tr: 'Çizgi', s: 21, e: '➖' },
+    { ar: 'Точка', ok: 'Toçka', tr: 'Nokta', s: 21, e: '•' },
+
+    // Mutfak (s: 22)
+    { ar: 'Тарелка', ok: 'Tarelka', tr: 'Tabak', s: 22, e: '🍽️' },
+    { ar: 'Стакан', ok: 'Stakan', tr: 'Bardak', s: 22, e: '🥛' },
+    { ar: 'Ложка', ok: 'Lojka', tr: 'Kaşık', s: 22, e: '🥄' },
+    { ar: 'Вилка', ok: 'Vilka', tr: 'Çatal', s: 22, e: '🍴' },
+    { ar: 'Нож', ok: 'Noj', tr: 'Bıçak', s: 22, e: '🔪' },
+    { ar: 'Кастрюля', ok: 'Kastrülya', tr: 'Tencere', s: 22, e: '🍲' },
+    { ar: 'Сковорода', ok: 'Skovoroda', tr: 'Tava', s: 22, e: '🍳' },
+    { ar: 'Миска', ok: 'Miska', tr: 'Kase', s: 22, e: '🥣' },
+    { ar: 'Чашка', ok: 'Çaşkka', tr: 'Fincan', s: 22, e: '☕' },
+    { ar: 'Духовка', ok: 'Duhovka', tr: 'Fırın', s: 22, e: '♨️' }
 ];
