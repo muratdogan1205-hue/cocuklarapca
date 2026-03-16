@@ -536,19 +536,57 @@ h1 {
     display: flex;
     justify-content: center;
     gap: 30px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    /* Mobilde taşmasın diye wrap kapatıldı */
+    width: 100%;
+    padding: 0 10px;
 }
 
 .animal-option {
+    width: 120px;
+    height: 120px;
     font-size: 6rem;
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: transform 0.2;
     filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.2));
-    padding: 15px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .animal-option:hover {
-    transform: scale(1.2);
+    transform: scale(1.1);
+}
+
+/* Mobil için özel ayarlar */
+@media (max-width: 600px) {
+    .speech-bubble {
+        padding: 15px 25px;
+        margin-bottom: 25px;
+        font-size: 1.5rem;
+        width: 90%;
+    }
+
+    .animals-container {
+        gap: 10px;
+    }
+
+    .animal-option {
+        width: 90px;
+        height: 90px;
+        padding: 5px;
+    }
+
+    .animal-option img,
+    .animal-option span {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
 }
 
 /* --- OYUN 3: KELİME AVCISI ---*/

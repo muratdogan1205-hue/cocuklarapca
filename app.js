@@ -718,9 +718,6 @@ function nextListeningQuestion() {
     options.forEach(opt => {
         const el = document.createElement('div');
         el.className = 'animal-option';
-        el.style.width = '120px';
-        el.style.height = '120px';
-        el.style.padding = '10px';
         el.innerHTML = renderImageElement(opt);
         el.onclick = () => {
             if (isAnswered) return; // Block if already answered
