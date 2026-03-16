@@ -37,8 +37,129 @@ const LANGUAGE_CONFIG = {
     }
 };
 
-function selectLanguage(lang) {
+let isAnimatingSelection = false;
+
+function prepareLanguageSelection(lang, event) {
+    if (isAnimatingSelection) return;
+    isAnimatingSelection = true;
+
+    // Ses
     playClickSound();
+
+    const archer = document.getElementById('archer-container');
+    const arrow = document.getElementById('flying-arrow');
+    const targetEl = event.currentTarget.querySelector('.balloon-body');
+
+    // Get positions
+    const archerRect = archer.getBoundingClientRect();
+    const targetRect = targetEl.getBoundingClientRect();
+
+    // Arrow start position (center of archer)
+    const startX = archerRect.left + archerRect.width / 2;
+    const startY = archerRect.top + archerRect.height / 2;
+
+    // Target position (center of balloon body)
+    const endX = targetRect.left + targetRect.width / 2;
+    const endY = targetRect.top + targetRect.height / 2;
+
+    // Calculate angle
+    const angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
+
+    // Set start position and rotation
+    arrow.style.left = startX + 'px';
+    arrow.style.top = startY + 'px';
+    arrow.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
+    arrow.style.display = 'block';
+
+    // Archer anticipation
+    archer.style.transform = 'scale(1.2)';
+
+    // Animate arrow
+    setTimeout(() => {
+        const animation = arrow.animate([
+            { left: startX + 'px', top: startY + 'px', transform: `translate(-50%, -50%) rotate(${angle}deg)` },
+            { left: endX + 'px', top: endY + 'px', transform: `translate(-50%, -50%) rotate(${angle}deg)` }
+        ], {
+            duration: 400,
+            easing: 'ease-in'
+        });
+
+        animation.onfinish = () => {
+            arrow.style.display = 'none';
+            archer.style.transform = 'scale(1)';
+
+            targetEl.classList.add('pop-anim');
+            playCorrectSound();
+
+            // Gizle balon string vb
+            const wrapper = event.currentTarget;
+            const string = wrapper.querySelector('.balloon-string');
+            if (string) string.style.opacity = '0';
+            const content = wrapper.querySelector('.balloon-content');
+            if (content) content.style.opacity = '0';
+
+            setTimeout(() => {
+                targetEl.classList.remove('pop-anim');
+                if (string) string.style.opacity = '1';
+                if (content) content.style.opacity = '1';
+                isAnimatingSelection = false;
+                selectLanguage(lang);
+            }, 300);
+        };
+    }, 300);
+}
+
+function selectLanguage(lang, event) {
+    playClickSound();
+
+    // Balon patlatma animasyonu
+    if (event) {
+        const wrapper = event.currentTarget;
+        const balloonBody = wrapper.querySelector('.balloon-body');
+        const balloonString = wrapper.querySelector('.balloon-string');
+
+        if (balloonBody) {
+            // Balon öne çıksın - büyüsün
+            balloonBody.style.transition = 'transform 0.4s';
+            balloonBody.style.transform = 'scale(1.4)';
+            balloonBody.style.zIndex = '100';
+            if (balloonString) balloonString.style.display = 'none';
+            playCorrectSound();
+            showConfetti();
+
+            // Yazı öne çıksın - büyük ve belirgin
+            const content = wrapper.querySelector('.balloon-content');
+            if (content) {
+                content.style.transition = 'transform 0.4s';
+                content.style.transform = 'scale(1.8)';
+                content.style.position = 'relative';
+                content.style.zIndex = '100';
+                content.style.textShadow = '2px 2px 8px rgba(0,0,0,0.5)';
+            }
+
+            setTimeout(() => {
+                // Her şeyi eski haline getir
+                balloonBody.style.transition = '';
+                balloonBody.style.transform = '';
+                balloonBody.style.zIndex = '';
+                balloonBody.style.border = '';
+                if (balloonString) balloonString.style.display = '';
+                if (content) {
+                    content.style.transition = '';
+                    content.style.transform = '';
+                    content.style.position = '';
+                    content.style.zIndex = '';
+                    content.style.textShadow = '';
+                }
+                doSelectLanguage(lang);
+            }, 3000);
+            return;
+        }
+    }
+    doSelectLanguage(lang);
+}
+
+function doSelectLanguage(lang) {
     selectedLanguage = lang;
 
     // ÖNEMLİ: Dil değiştiğinde eski kelime verilerini temizle!
@@ -574,6 +695,7 @@ function nextListeningQuestion() {
     // 3 seçenek sun
     let pool = [...currentStageWords];
     let options = pool.sort(() => 0.5 - Math.random()).slice(0, 3);
+    let isAnswered = false; // Add flag to prevent multiple clicks
 
     currentQuestionItem = options[Math.floor(Math.random() * options.length)];
 
@@ -601,9 +723,12 @@ function nextListeningQuestion() {
         el.style.padding = '10px';
         el.innerHTML = renderImageElement(opt);
         el.onclick = () => {
+            if (isAnswered) return; // Block if already answered
+
             if (opt.ar === currentQuestionItem.ar) {
+                isAnswered = true; // Set flag
                 playCorrectSound();
-                showFeedback("Aferin! 👏");
+                showFeedback(`Aferin! 👏\n(${currentQuestionItem.tr})`);
                 addStar(1);
                 // speakWord("mumtaz"); // Sabit arapça yerine sadece ses efekti yeterli
                 listeningCorrectCount++;

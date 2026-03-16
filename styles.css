@@ -626,6 +626,8 @@ h1 {
     z-index: 2000;
     display: none;
     animation: feedbackPop 0.3s ease-out;
+    white-space: pre-line;
+    text-align: center;
 }
 
 @keyframes feedbackPop {

@@ -43,7 +43,7 @@
             <div class="balloons-container">
 
                 <!-- Arapça -->
-                <div class="balloon-wrapper float-1" onclick="selectLanguage('arabic')">
+                <div class="balloon-wrapper float-1" onclick="selectLanguage('arabic', event)">
                     <div class="balloon-body" style="background: radial-gradient(circle at 30% 30%, #66BB6A, #2E7D32);">
                         <div class="balloon-content">
                             <span class="balloon-flag">🇸🇦</span>
@@ -54,7 +54,7 @@
                 </div>
 
                 <!-- İngilizce -->
-                <div class="balloon-wrapper float-2" onclick="selectLanguage('english')">
+                <div class="balloon-wrapper float-2" onclick="selectLanguage('english', event)">
                     <div class="balloon-body" style="background: radial-gradient(circle at 30% 30%, #42A5F5, #1565C0);">
                         <div class="balloon-content">
                             <span class="balloon-flag">🇬🇧</span>
@@ -65,7 +65,7 @@
                 </div>
 
                 <!-- Almanca -->
-                <div class="balloon-wrapper float-3" onclick="selectLanguage('german')">
+                <div class="balloon-wrapper float-3" onclick="selectLanguage('german', event)">
                     <div class="balloon-body" style="background: radial-gradient(circle at 30% 30%, #FFCA28, #FF8F00);">
                         <div class="balloon-content">
                             <span class="balloon-flag">🇩🇪</span>
@@ -76,7 +76,7 @@
                 </div>
 
                 <!-- Rusça -->
-                <div class="balloon-wrapper float-4" onclick="selectLanguage('russian')">
+                <div class="balloon-wrapper float-4" onclick="selectLanguage('russian', event)">
                     <div class="balloon-body" style="background: radial-gradient(circle at 30% 30%, #EF5350, #C62828);">
                         <div class="balloon-content">
                             <span class="balloon-flag">🇷🇺</span>
@@ -87,6 +87,7 @@
                 </div>
 
             </div>
+
 
             <!-- Çimen -->
             <div class="grass-layer"></div>
