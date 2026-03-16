@@ -152,7 +152,7 @@ function selectLanguage(lang, event) {
                     content.style.textShadow = '';
                 }
                 doSelectLanguage(lang);
-            }, 3000);
+            }, 1500);
             return;
         }
     }
