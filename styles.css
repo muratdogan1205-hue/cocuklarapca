@@ -1934,3 +1934,27 @@ h1 {
         padding: 8px 20px;
     }
 }
+
+/* --- TWEMOJI VEKTÖREL SABİT İKON STİLLERİ --- */
+img.emoji {
+    height: 1em;
+    width: 1em;
+    margin: 0 .05em 0 .1em;
+    vertical-align: -0.1em;
+    display: inline-block;
+}
+
+.fun-icon img.emoji {
+    width: 60px;
+    height: 60px;
+}
+
+.mode-icon img.emoji {
+    width: 35px;
+    height: 35px;
+}
+
+.trophy-icon img.emoji {
+    width: 80px;
+    height: 80px;
+}

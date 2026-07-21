@@ -91,6 +91,12 @@ const englishWords = [
     { ar: 'Heart', ok: 'Hart', tr: 'Kalp', s: 21, e: '❤️' },
     { ar: 'Line', ok: 'Layn', tr: 'Çizgi', s: 21, e: '➖' },
     { ar: 'Dot', ok: 'Dot', tr: 'Nokta', s: 21, e: '•' },
+    { ar: 'Diamond', ok: 'Daymınd', tr: 'Elmas', s: 21, e: '🔷' },
+    { ar: 'Oval', ok: 'Ovıl', tr: 'Oval', s: 21, e: '🥚' },
+    { ar: 'Pentagon', ok: 'Pentagın', tr: 'Beşgen', s: 21, e: '⬟' },
+    { ar: 'Hexagon', ok: 'Heksagın', tr: 'Altıgen', s: 21, e: '⬢' },
+    { ar: 'Crescent', ok: 'Kresınt', tr: 'Hilal', s: 21, e: '🌙' },
+    { ar: 'Cube', ok: 'Kyub', tr: 'Küp', s: 21, e: '🧊' },
 
     // Mutfak (s: 22)
     { ar: 'Plate', ok: 'Pleyt', tr: 'Tabak', s: 22, e: '🍽️' },

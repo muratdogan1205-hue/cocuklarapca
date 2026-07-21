@@ -1,30 +1,370 @@
-// --- VERİ HAVUZU ---
-const vocab = [
-    { id: 'apple', tr: 'Elma', ar: 'تفاحة', tr_okunus: 'Tuffah', emoji: '🍎', color: 'red' },
-    { id: 'cat', tr: 'Kedi', ar: 'قطة', tr_okunus: 'Kıtta', emoji: '🐱', color: 'orange' },
-    { id: 'lion', tr: 'Aslan', ar: 'أسد', tr_okunus: 'Esed', emoji: '🦁', color: 'orange' },
-    { id: 'dog', tr: 'Köpek', ar: 'كلب', tr_okunus: 'Kelb', emoji: '🐶', color: 'brown' },
-    { id: 'tree', tr: 'Ağaç', ar: 'شجرة', tr_okunus: 'Şecera', emoji: '🌳', color: 'green' },
-    { id: 'star', tr: 'Yıldız', ar: 'نجمة', tr_okunus: 'Nejme', emoji: '⭐', color: 'yellow' },
-    { id: 'fish', tr: 'Balık', ar: 'سمكة', tr_okunus: 'Semeke', emoji: '🐟', color: 'blue' },
-    { id: 'car', tr: 'Araba', ar: 'سيارة', tr_okunus: 'Seyyara', emoji: '🚗', color: 'red' }
-];
+// --- DURUM YÖNETİMİ ---
+let currentStage = 1;
+let currentStageWords = [];
+let currentCategory = null;
+let lastGameMode = null;
+let unlockedStage = 1; // Açık olan en yüksek aşama
 
-const colorsInfo = [
-    { id: 'red', tr: 'Kırmızı', ar: 'أحمر', okunus: 'Ahmar', code: '#f44336' },
-    { id: 'blue', tr: 'Mavi', ar: 'أزرق', okunus: 'Azrak', code: '#2196F3' },
-    { id: 'green', tr: 'Yeşil', ar: 'أخضر', okunus: 'Ahdar', code: '#4CAF50' },
-    { id: 'yellow', tr: 'Sarı', ar: 'أصفر', okunus: 'Asfar', code: '#FFEB3B' }
-];
+// --- KULLANICI VE DİL ---
+// --- KULLANICI VE DİL ---
+let selectedLanguage = 'arabic';
+let activeWords = []; // Seçilen dilin kelimeleri
+
+// --- ÖDÜL SİSTEMİ ---
+let totalStars = 0;
+let gameStars = 0;
+
+
+
+// --- DİL SEÇİMİ ---
+// --- DİL SEÇİMİ ---
+const LANGUAGE_CONFIG = {
+    arabic: {
+        words: () => arabicWords,
+        voice: 'ar'
+    },
+    english: {
+        words: () => englishWords,
+        voice: 'en'
+    }
+};
+
+let isAnimatingSelection = false;
+
+function prepareLanguageSelection(lang, event) {
+    if (isAnimatingSelection) return;
+    isAnimatingSelection = true;
+
+    // Ses
+    playClickSound();
+
+    const archer = document.getElementById('archer-container');
+    const arrow = document.getElementById('flying-arrow');
+    const targetEl = event.currentTarget.querySelector('.balloon-body');
+
+    // Get positions
+    const archerRect = archer.getBoundingClientRect();
+    const targetRect = targetEl.getBoundingClientRect();
+
+    // Arrow start position (center of archer)
+    const startX = archerRect.left + archerRect.width / 2;
+    const startY = archerRect.top + archerRect.height / 2;
+
+    // Target position (center of balloon body)
+    const endX = targetRect.left + targetRect.width / 2;
+    const endY = targetRect.top + targetRect.height / 2;
+
+    // Calculate angle
+    const angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
+
+    // Set start position and rotation
+    arrow.style.left = startX + 'px';
+    arrow.style.top = startY + 'px';
+    arrow.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
+    arrow.style.display = 'block';
+
+    // Archer anticipation
+    archer.style.transform = 'scale(1.2)';
+
+    // Animate arrow
+    setTimeout(() => {
+        const animation = arrow.animate([
+            { left: startX + 'px', top: startY + 'px', transform: `translate(-50%, -50%) rotate(${angle}deg)` },
+            { left: endX + 'px', top: endY + 'px', transform: `translate(-50%, -50%) rotate(${angle}deg)` }
+        ], {
+            duration: 400,
+            easing: 'ease-in'
+        });
+
+        animation.onfinish = () => {
+            arrow.style.display = 'none';
+            archer.style.transform = 'scale(1)';
+
+            targetEl.classList.add('pop-anim');
+            playCorrectSound();
+
+            // Gizle balon string vb
+            const wrapper = event.currentTarget;
+            const string = wrapper.querySelector('.balloon-string');
+            if (string) string.style.opacity = '0';
+            const content = wrapper.querySelector('.balloon-content');
+            if (content) content.style.opacity = '0';
+
+            setTimeout(() => {
+                targetEl.classList.remove('pop-anim');
+                if (string) string.style.opacity = '1';
+                if (content) content.style.opacity = '1';
+                isAnimatingSelection = false;
+                selectLanguage(lang);
+            }, 300);
+        };
+    }, 300);
+}
+
+function selectLanguage(lang, event) {
+    playClickSound();
+
+    // Balon patlatma animasyonu
+    if (event) {
+        const wrapper = event.currentTarget;
+        const balloonBody = wrapper.querySelector('.balloon-body');
+        const balloonString = wrapper.querySelector('.balloon-string');
+
+        if (balloonBody) {
+            // Balon öne çıksın - büyüsün
+            balloonBody.style.transition = 'transform 0.4s';
+            balloonBody.style.transform = 'scale(1.4)';
+            balloonBody.style.zIndex = '100';
+            if (balloonString) balloonString.style.display = 'none';
+            playCorrectSound();
+            showConfetti();
+
+            // Yazı öne çıksın - büyük ve belirgin
+            const content = wrapper.querySelector('.balloon-content');
+            if (content) {
+                content.style.transition = 'transform 0.4s';
+                content.style.transform = 'scale(1.8)';
+                content.style.position = 'relative';
+                content.style.zIndex = '100';
+                content.style.textShadow = '2px 2px 8px rgba(0,0,0,0.5)';
+            }
+
+            setTimeout(() => {
+                // Her şeyi eski haline getir
+                balloonBody.style.transition = '';
+                balloonBody.style.transform = '';
+                balloonBody.style.zIndex = '';
+                balloonBody.style.border = '';
+                if (balloonString) balloonString.style.display = '';
+                if (content) {
+                    content.style.transition = '';
+                    content.style.transform = '';
+                    content.style.position = '';
+                    content.style.zIndex = '';
+                    content.style.textShadow = '';
+                }
+                doSelectLanguage(lang);
+            }, 1500);
+            return;
+        }
+    }
+    doSelectLanguage(lang);
+}
+
+function doSelectLanguage(lang) {
+    selectedLanguage = lang;
+
+    // ÖNEMLİ: Dil değiştiğinde eski kelime verilerini temizle!
+    currentStageWords = [];
+    currentCategory = null;
+    activeBalloonWords = [];
+
+    // Aktif kelimeleri ayarla
+    activeWords = LANGUAGE_CONFIG[lang].words();
+
+    // Başlığı güncelle
+    const langNames = { arabic: 'Arapça', english: 'İngilizce' };
+    document.getElementById('main-title').textContent = `🌸 ELİF İNCİ'NİN DİLLER BAHÇESİ 🌺`;
+    document.getElementById('main-subtitle').textContent = `${langNames[lang]} Öğrenmeye Hazır mısın?`;
+
+    showScreen('main-menu');
+}
 
 // --- SES SENTEZİ (TTS) ---
-function speakArabic(text) {
-    if ('speechSynthesis' in window) {
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'ar-SA';
-        utterance.rate = 0.9;
-        window.speechSynthesis.speak(utterance);
+let voicesLoaded = false;
+let arabicVoice = null;
+
+// --- AUDIO CONTEXT (Ses Efektleri) ---
+let audioContext = null;
+
+function initAudioContext() {
+    if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
     }
+    return audioContext;
+}
+
+// Doğru cevap sesi - Neşeli ding
+function playCorrectSound() {
+    try {
+        const ctx = initAudioContext();
+        const oscillator = ctx.createOscillator();
+        const gainNode = ctx.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(ctx.destination);
+
+        oscillator.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
+        oscillator.frequency.setValueAtTime(659.25, ctx.currentTime + 0.1); // E5
+        oscillator.frequency.setValueAtTime(783.99, ctx.currentTime + 0.2); // G5
+
+        gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+
+        oscillator.start(ctx.currentTime);
+        oscillator.stop(ctx.currentTime + 0.4);
+    } catch (e) { console.log('Ses çalınamadı'); }
+}
+
+// Yanlış cevap sesi - Nazik boop
+function playWrongSound() {
+    try {
+        const ctx = initAudioContext();
+        const oscillator = ctx.createOscillator();
+        const gainNode = ctx.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(ctx.destination);
+
+        oscillator.frequency.setValueAtTime(200, ctx.currentTime);
+        oscillator.frequency.setValueAtTime(150, ctx.currentTime + 0.1);
+
+        gainNode.gain.setValueAtTime(0.2, ctx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+
+        oscillator.start(ctx.currentTime);
+        oscillator.stop(ctx.currentTime + 0.2);
+    } catch (e) { console.log('Ses çalınamadı'); }
+}
+
+// Tebrik sesi - Fanfare
+function playCelebrationSound() {
+    try {
+        const ctx = initAudioContext();
+        const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+
+        notes.forEach((freq, i) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            osc.frequency.setValueAtTime(freq, ctx.currentTime + i * 0.15);
+            gain.gain.setValueAtTime(0.2, ctx.currentTime + i * 0.15);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + i * 0.15 + 0.3);
+
+            osc.start(ctx.currentTime + i * 0.15);
+            osc.stop(ctx.currentTime + i * 0.15 + 0.3);
+        });
+    } catch (e) { console.log('Ses çalınamadı'); }
+}
+
+// Buton tıklama sesi
+function playClickSound() {
+    try {
+        const ctx = initAudioContext();
+        const oscillator = ctx.createOscillator();
+        const gainNode = ctx.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(ctx.destination);
+
+        oscillator.frequency.setValueAtTime(400, ctx.currentTime);
+        gainNode.gain.setValueAtTime(0.1, ctx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+
+        oscillator.start(ctx.currentTime);
+        oscillator.stop(ctx.currentTime + 0.1);
+    } catch (e) { }
+}
+
+// --- KONFETİ EFEKTİ ---
+function showConfetti() {
+    const container = document.getElementById('confetti-container');
+    container.innerHTML = '';
+
+    const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ff9800', '#e91e63'];
+    const emojis = ['🌟', '⭐', '✨', '🎉', '🎊', '💫'];
+
+    for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + '%';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.animationDelay = Math.random() * 0.5 + 's';
+        confetti.style.animationDuration = (Math.random() * 1 + 2) + 's';
+
+        // Bazı konfetiler emoji olsun
+        if (Math.random() > 0.7) {
+            confetti.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            confetti.style.backgroundColor = 'transparent';
+            confetti.style.fontSize = '1.5rem';
+        }
+
+        container.appendChild(confetti);
+    }
+
+    setTimeout(() => {
+        container.innerHTML = '';
+    }, 3000);
+}
+
+// --- YILDIZ SİSTEMİ ---
+function addStar(count = 1) {
+    gameStars += count;
+    totalStars += count;
+    updateStarDisplay();
+
+    // Her 3 yıldızda konfeti göster
+    if (gameStars % 3 === 0) {
+        showConfetti();
+    }
+}
+
+function updateStarDisplay() {
+    const counter = document.getElementById('star-count');
+    if (counter) {
+        counter.textContent = gameStars;
+        counter.parentElement.classList.add('star-pulse');
+        setTimeout(() => counter.parentElement.classList.remove('star-pulse'), 300);
+    }
+}
+
+function resetGameStars() {
+    gameStars = 0;
+    updateStarDisplay();
+}
+
+// Sesleri yükle
+function loadVoices() {
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length > 0) {
+        voicesLoaded = true;
+        // Sadece Arapça ses ara
+        arabicVoice = voices.find(v => v.lang.startsWith('ar')) ||
+            voices.find(v => v.lang.toLowerCase().includes('ar-')) ||
+            voices.find(v => v.name.toLowerCase().includes('arabic'));
+
+        if (arabicVoice) {
+            console.log('Arapça ses bulundu:', arabicVoice.name, arabicVoice.lang);
+        } else {
+            console.log('Arapça ses bulunamadı. Mevcut sesler:', voices.map(v => v.lang).join(', '));
+        }
+    }
+}
+
+// Sesler yüklendiğinde
+if ('speechSynthesis' in window) {
+    loadVoices();
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+}
+
+function speakArabic(text) {
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    if (!voicesLoaded) loadVoices();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'ar-SA';
+    utterance.rate = 0.8;
+
+    if (arabicVoice && arabicVoice.lang.startsWith('ar')) {
+        utterance.voice = arabicVoice;
+    }
+
+    setTimeout(() => {
+        window.speechSynthesis.speak(utterance);
+    }, 50);
 }
 
 // --- NAVİGASYON ---
@@ -33,15 +373,45 @@ function showScreen(id) {
     document.getElementById(id).classList.add('active');
 
     const homeBtn = document.getElementById('home-btn');
-    if (id === 'main-menu') {
+    const starCounter = document.getElementById('star-counter');
+
+    // Ana menü veya dil seçiminde geri tuşu ve yıldız sayacı gizle
+    if (id === 'main-menu' || id === 'language-screen') {
         homeBtn.style.display = 'none';
-        stopColorGame();
+        starCounter.style.display = 'none';
+        stopBalloonGame();
+    } else if (id === 'game-complete') {
+        homeBtn.style.display = 'none';
+        starCounter.style.display = 'none';
     } else {
         homeBtn.style.display = 'flex';
+        starCounter.style.display = 'flex';
     }
+
+    // Aşama seçimi ekranı açıldıysa gridi doldur
+    if (id === 'stage-select') {
+        initStageGrid();
+    }
+
+    // Emojileri tüm cihazlarda sabit vektörel görsel yap
+    setTimeout(() => {
+        if (window.twemoji) {
+            twemoji.parse(document.body, {
+                folder: 'svg',
+                ext: '.svg'
+            });
+        }
+    }, 50);
 }
 
 function goHome() {
+    playClickSound();
+    goToMainMenu();
+}
+
+function goToMainMenu() {
+    playClickSound();
+    currentCategory = null;
     showScreen('main-menu');
 }
 
@@ -49,27 +419,349 @@ function showFeedback(text = "Harika! 🌟") {
     const fb = document.getElementById('feedback');
     fb.textContent = text;
     fb.style.display = 'block';
-    setTimeout(() => { fb.style.display = 'none'; }, 1000);
+    setTimeout(() => { fb.style.display = 'none'; }, 1200);
 }
 
+// --- KATEGORİ SİSTEMİ ---
+const CATEGORY_STAGES = {
+    animals: [5, 6],  // Hayvanlar 1 ve 2
+    colors: [4],      // Renkler
+    fruits: [7],      // Meyveler/Yiyecekler
+    family: [3],      // Aile
+    numbers: [2],     // Sayılar
+    shapes: [21],     // Şekiller
+    kitchen: [22]     // Mutfak
+};
+
+const CATEGORY_NAMES = {
+    animals: '🦁 Hayvanlar',
+    colors: '🌈 Renkler',
+    fruits: '🍎 Meyveler',
+    family: '👨‍👩‍👧 Aile',
+    numbers: '🔢 Sayılar',
+    shapes: '🔺 Şekiller',
+    kitchen: '🥣 Mutfak'
+};
+
+// --- YÜKSEK ÇÖZÜNÜRLÜKLÜ GÖRSEL VE İKON SİSTEMİ ---
+function getTwemojiUrl(emoji) {
+    if (!emoji) return '';
+    const codePoints = [];
+    for (const char of emoji) {
+        const cp = char.codePointAt(0);
+        if (cp !== 0xFE0F) { // variation selector-16 temizle
+            codePoints.push(cp.toString(16));
+        }
+    }
+    if (codePoints.length === 0) return '';
+    const hex = codePoints.join('-');
+    return `https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/${hex}.svg`;
+}
+
+function renderImageElement(item) {
+    if (!item) return '';
+
+    // 1. RENKLER (Canlı ve Net 3D Renk Küreleri)
+    const colorMap = {
+        'Kırmızı': { bg: 'radial-gradient(circle at 30% 30%, #FF5252, #D50000)', border: '#FF1744' },
+        'Mavi': { bg: 'radial-gradient(circle at 30% 30%, #448AFF, #2962FF)', border: '#2979FF' },
+        'Sarı': { bg: 'radial-gradient(circle at 30% 30%, #FFFD54, #FBC02D)', border: '#FDD835' },
+        'Yeşil': { bg: 'radial-gradient(circle at 30% 30%, #69F0AE, #00C853)', border: '#00E676' },
+        'Turuncu': { bg: 'radial-gradient(circle at 30% 30%, #FFAB40, #FF6D00)', border: '#FF9100' },
+        'Mor': { bg: 'radial-gradient(circle at 30% 30%, #E040FB, #AA00FF)', border: '#D500F9' },
+        'Pembe': { bg: 'radial-gradient(circle at 30% 30%, #FF80AB, #C51162)', border: '#FF4081' },
+        'Siyah': { bg: 'radial-gradient(circle at 30% 30%, #616161, #000000)', border: '#212121' },
+        'Beyaz': { bg: 'radial-gradient(circle at 30% 30%, #FFFFFF, #E0E0E0)', border: '#BDBDBD' },
+        'Kahverengi': { bg: 'radial-gradient(circle at 30% 30%, #A1887F, #4E342E)', border: '#6D4C41' }
+    };
+    if (colorMap[item.tr]) {
+        return `<div class="color-swatch-visual" style="background: ${colorMap[item.tr].bg}; border: 4px solid ${colorMap[item.tr].border}; width:75%; height:75%; margin:12.5% auto; border-radius:50%; box-shadow: inset 0 -5px 15px rgba(0,0,0,0.3), 0 6px 15px rgba(0,0,0,0.2);"></div>`;
+    }
+
+    // 2. SAYILAR (Büyük, Okunaklı 3D Sayı Balonları)
+    const numMap = {
+        'Bir': 1, 'İki': 2, 'Üç': 3, 'Dört': 4, 'Beş': 5,
+        'Altı': 6, 'Yedi': 7, 'Sekiz': 8, 'Dokuz': 9, 'On': 10,
+        'On bir': 11, 'On iki': 12, 'On üç': 13, 'On dört': 14, 'On beş': 15,
+        'On altı': 16, 'On yedi': 17, 'On sekiz': 18, 'On dokuz': 19, 'Yirmi': 20
+    };
+    if (numMap[item.tr] !== undefined) {
+        return `<div class="number-badge-visual" style="width:80%; height:80%; margin:10% auto; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg, #FF7043, #E64A19); color:white; font-size:2.8rem; font-weight:bold; border-radius:50%; box-shadow:0 6px 15px rgba(230,74,25,0.4), inset 0 2px 5px rgba(255,255,255,0.4); font-family:'Fredoka', sans-serif;">${numMap[item.tr]}</div>`;
+    }
+
+    // 3. ŞEKİLLER (Cam Gibi Vektörel SVG Şekilleri)
+    const shapeMap = {
+        'Daire': `<svg viewBox="0 0 100 100" style="width:100%;height:100%;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.15));"><circle cx="50" cy="50" r="40" fill="#FF5722" stroke="#E64A19" stroke-width="4"/></svg>`,
+        'Kare': `<svg viewBox="0 0 100 100" style="width:100%;height:100%;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.15));"><rect x="15" y="15" width="70" height="70" rx="12" fill="#2196F3" stroke="#1976D2" stroke-width="4"/></svg>`,
+        'Üçgen': `<svg viewBox="0 0 100 100" style="width:100%;height:100%;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.15));"><polygon points="50,15 88,85 12,85" fill="#4CAF50" stroke="#388E3C" stroke-width="4"/></svg>`,
+        'Dikdörtgen': `<svg viewBox="0 0 100 100" style="width:100%;height:100%;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.15));"><rect x="10" y="25" width="80" height="50" rx="10" fill="#9C27B0" stroke="#7B1FA2" stroke-width="4"/></svg>`,
+        'Yıldız': `<svg viewBox="0 0 100 100" style="width:100%;height:100%;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.15));"><polygon points="50,10 63,38 93,38 68,56 78,86 50,67 22,86 32,56 7,38 37,38" fill="#FFEB3B" stroke="#FBC02D" stroke-width="3"/></svg>`,
+        'Kalp': `<svg viewBox="0 0 100 100" style="width:100%;height:100%;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.15));"><path d="M 50,85 C 50,85 15,55 15,35 C 15,20 28,15 38,22 C 45,27 50,33 50,33 C 50,33 55,27 62,22 C 72,15 85,20 85,35 C 85,55 50,85 50,85 Z" fill="#E91E63" stroke="#C2185B" stroke-width="4"/></svg>`,
+        'Çizgi': `<svg viewBox="0 0 100 100" style="width:100%;height:100%;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.15));"><line x1="15" y1="50" x2="85" y2="50" stroke="#FF9800" stroke-width="14" stroke-linecap="round"/></svg>`,
+        'Nokta': `<svg viewBox="0 0 100 100" style="width:100%;height:100%;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.15));"><circle cx="50" cy="50" r="22" fill="#673AB7" stroke="#512DA8" stroke-width="4"/></svg>`,
+        'Elmas': `<svg viewBox="0 0 100 100" style="width:100%;height:100%;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.15));"><polygon points="50,10 90,50 50,90 10,50" fill="#00BCD4" stroke="#00838F" stroke-width="4"/></svg>`,
+        'Oval': `<svg viewBox="0 0 100 100" style="width:100%;height:100%;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.15));"><ellipse cx="50" cy="50" rx="42" ry="28" fill="#FF4081" stroke="#C51162" stroke-width="4"/></svg>`,
+        'Beşgen': `<svg viewBox="0 0 100 100" style="width:100%;height:100%;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.15));"><polygon points="50,12 90,40 75,88 25,88 10,40" fill="#7C4DFF" stroke="#512DA8" stroke-width="4"/></svg>`,
+        'Altıgen': `<svg viewBox="0 0 100 100" style="width:100%;height:100%;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.15));"><polygon points="50,10 85,30 85,70 50,90 15,70 15,30" fill="#FF9800" stroke="#F57C00" stroke-width="4"/></svg>`,
+        'Hilal': `<svg viewBox="0 0 100 100" style="width:100%;height:100%;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.15));"><path d="M 65 15 A 35 35 0 1 0 65 85 A 28 28 0 1 1 65 15 Z" fill="#FFEB3B" stroke="#FBC02D" stroke-width="3"/></svg>`,
+        'Küp': `<svg viewBox="0 0 100 100" style="width:100%;height:100%;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.15));"><polygon points="50,15 85,32 85,68 50,85 15,68 15,32" fill="#00E676" stroke="#00A152" stroke-width="3"/><polygon points="50,15 85,32 50,49 15,32" fill="#69F0AE"/><line x1="50" y1="49" x2="50" y2="85" stroke="#00A152" stroke-width="3"/></svg>`
+    };
+    if (shapeMap[item.tr]) {
+        return shapeMap[item.tr];
+    }
+
+    // 4. AİLE BİREYLERİ (Son Derece Ayırt Edici Özel Vektörel Kartlar)
+    const familyMap = {
+        'Baba': `<div class="family-card-visual" style="background: linear-gradient(135deg, #1E88E5, #1565C0); border: 3px solid #0D47A1; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; overflow:hidden; box-shadow: inset 0 2px 5px rgba(255,255,255,0.4), 0 6px 12px rgba(0,0,0,0.2);">
+                    <div style="margin-bottom:8px;"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f468.svg" style="width:65px;height:65px;filter:drop-shadow(0 4px 4px rgba(0,0,0,0.3));"></div>
+                    <div style="position:absolute; bottom:0; width:100%; padding:3px 0; text-align:center; color:white; font-size:0.8rem; font-weight:bold; background:#0D47A1; font-family:'Fredoka', sans-serif;">👔 BABA</div>
+                 </div>`,
+
+        'Anne': `<div class="family-card-visual" style="background: linear-gradient(135deg, #EC407A, #C2185B); border: 3px solid #880E4F; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; overflow:hidden; box-shadow: inset 0 2px 5px rgba(255,255,255,0.4), 0 6px 12px rgba(0,0,0,0.2);">
+                    <div style="margin-bottom:8px;"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f469.svg" style="width:65px;height:65px;filter:drop-shadow(0 4px 4px rgba(0,0,0,0.3));"></div>
+                    <div style="position:absolute; bottom:0; width:100%; padding:3px 0; text-align:center; color:white; font-size:0.8rem; font-weight:bold; background:#880E4F; font-family:'Fredoka', sans-serif;">💖 ANNE</div>
+                 </div>`,
+
+        'Oğul': `<div class="family-card-visual" style="background: linear-gradient(135deg, #26C6DA, #00838F); border: 3px solid #006064; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; overflow:hidden; box-shadow: inset 0 2px 5px rgba(255,255,255,0.4), 0 6px 12px rgba(0,0,0,0.2);">
+                    <div style="margin-bottom:8px;"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f466.svg" style="width:65px;height:65px;filter:drop-shadow(0 4px 4px rgba(0,0,0,0.3));"></div>
+                    <div style="position:absolute; bottom:0; width:100%; padding:3px 0; text-align:center; color:white; font-size:0.8rem; font-weight:bold; background:#006064; font-family:'Fredoka', sans-serif;">👦 OĞUL</div>
+                 </div>`,
+
+        'Kız': `<div class="family-card-visual" style="background: linear-gradient(135deg, #AB47BC, #7B1FA2); border: 3px solid #4A148C; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; overflow:hidden; box-shadow: inset 0 2px 5px rgba(255,255,255,0.4), 0 6px 12px rgba(0,0,0,0.2);">
+                    <div style="margin-bottom:8px;"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f467.svg" style="width:65px;height:65px;filter:drop-shadow(0 4px 4px rgba(0,0,0,0.3));"></div>
+                    <div style="position:absolute; bottom:0; width:100%; padding:3px 0; text-align:center; color:white; font-size:0.8rem; font-weight:bold; background:#4A148C; font-family:'Fredoka', sans-serif;">🎀 KIZ</div>
+                 </div>`,
+
+        'Erkek kardeş': `<div class="family-card-visual" style="background: linear-gradient(135deg, #66BB6A, #2E7D32); border: 3px solid #1B5E20; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; overflow:hidden; box-shadow: inset 0 2px 5px rgba(255,255,255,0.4), 0 6px 12px rgba(0,0,0,0.2);">
+                            <div style="display:flex; justify-content:center; gap:4px; margin-bottom:8px;">
+                                <img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f466.svg" style="width:50px;height:50px;">
+                                <img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f466.svg" style="width:50px;height:50px;">
+                            </div>
+                            <div style="position:absolute; bottom:0; width:100%; padding:3px 0; text-align:center; color:white; font-size:0.75rem; font-weight:bold; background:#1B5E20; font-family:'Fredoka', sans-serif;">👦👦 ERKEK KARDEŞ</div>
+                         </div>`,
+
+        'Erkek Kardeş': `<div class="family-card-visual" style="background: linear-gradient(135deg, #66BB6A, #2E7D32); border: 3px solid #1B5E20; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; overflow:hidden; box-shadow: inset 0 2px 5px rgba(255,255,255,0.4), 0 6px 12px rgba(0,0,0,0.2);">
+                            <div style="display:flex; justify-content:center; gap:4px; margin-bottom:8px;">
+                                <img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f466.svg" style="width:50px;height:50px;">
+                                <img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f466.svg" style="width:50px;height:50px;">
+                            </div>
+                            <div style="position:absolute; bottom:0; width:100%; padding:3px 0; text-align:center; color:white; font-size:0.75rem; font-weight:bold; background:#1B5E20; font-family:'Fredoka', sans-serif;">👦👦 ERKEK KARDEŞ</div>
+                         </div>`,
+
+        'Kız kardeş': `<div class="family-card-visual" style="background: linear-gradient(135deg, #FFA726, #EF6C00); border: 3px solid #E65100; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; overflow:hidden; box-shadow: inset 0 2px 5px rgba(255,255,255,0.4), 0 6px 12px rgba(0,0,0,0.2);">
+                            <div style="display:flex; justify-content:center; gap:4px; margin-bottom:8px;">
+                                <img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f467.svg" style="width:50px;height:50px;">
+                                <img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f467.svg" style="width:50px;height:50px;">
+                            </div>
+                            <div style="position:absolute; bottom:0; width:100%; padding:3px 0; text-align:center; color:white; font-size:0.75rem; font-weight:bold; background:#E65100; font-family:'Fredoka', sans-serif;">👧👧 KIZ KARDEŞ</div>
+                         </div>`,
+
+        'Kız Kardeş': `<div class="family-card-visual" style="background: linear-gradient(135deg, #FFA726, #EF6C00); border: 3px solid #E65100; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; overflow:hidden; box-shadow: inset 0 2px 5px rgba(255,255,255,0.4), 0 6px 12px rgba(0,0,0,0.2);">
+                            <div style="display:flex; justify-content:center; gap:4px; margin-bottom:8px;">
+                                <img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f467.svg" style="width:50px;height:50px;">
+                                <img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f467.svg" style="width:50px;height:50px;">
+                            </div>
+                            <div style="position:absolute; bottom:0; width:100%; padding:3px 0; text-align:center; color:white; font-size:0.75rem; font-weight:bold; background:#E65100; font-family:'Fredoka', sans-serif;">👧👧 KIZ KARDEŞ</div>
+                         </div>`,
+
+        'Dede': `<div class="family-card-visual" style="background: linear-gradient(135deg, #78909C, #37474F); border: 3px solid #263238; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; overflow:hidden; box-shadow: inset 0 2px 5px rgba(255,255,255,0.4), 0 6px 12px rgba(0,0,0,0.2);">
+                    <div style="margin-bottom:8px;"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f474.svg" style="width:65px;height:65px;filter:drop-shadow(0 4px 4px rgba(0,0,0,0.3));"></div>
+                    <div style="position:absolute; bottom:0; width:100%; padding:3px 0; text-align:center; color:white; font-size:0.8rem; font-weight:bold; background:#263238; font-family:'Fredoka', sans-serif;">👴 DEDE</div>
+                 </div>`,
+
+        'Nine': `<div class="family-card-visual" style="background: linear-gradient(135deg, #B0BEC5, #546E7A); border: 3px solid #37474F; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; overflow:hidden; box-shadow: inset 0 2px 5px rgba(255,255,255,0.4), 0 6px 12px rgba(0,0,0,0.2);">
+                    <div style="margin-bottom:8px;"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f475.svg" style="width:65px;height:65px;filter:drop-shadow(0 4px 4px rgba(0,0,0,0.3));"></div>
+                    <div style="position:absolute; bottom:0; width:100%; padding:3px 0; text-align:center; color:white; font-size:0.8rem; font-weight:bold; background:#37474F; font-family:'Fredoka', sans-serif;">👵 NİNE</div>
+                 </div>`,
+
+        'Bebek': `<div class="family-card-visual" style="background: linear-gradient(135deg, #FFF176, #FBC02D); border: 3px solid #F57F17; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; overflow:hidden; box-shadow: inset 0 2px 5px rgba(255,255,255,0.4), 0 6px 12px rgba(0,0,0,0.2);">
+                    <div style="margin-bottom:8px;"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f476.svg" style="width:65px;height:65px;filter:drop-shadow(0 4px 4px rgba(0,0,0,0.3));"></div>
+                    <div style="position:absolute; bottom:0; width:100%; padding:3px 0; text-align:center; color:#000; font-size:0.8rem; font-weight:bold; background:#F57F17; font-family:'Fredoka', sans-serif;">👶 BEBEK</div>
+                 </div>`,
+
+        'Aile': `<div class="family-card-visual" style="background: linear-gradient(135deg, #FF8A65, #D84315); border: 3px solid #BF360C; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; overflow:hidden; box-shadow: inset 0 2px 5px rgba(255,255,255,0.4), 0 6px 12px rgba(0,0,0,0.2);">
+                    <div style="margin-bottom:8px;"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f46a.svg" style="width:65px;height:65px;filter:drop-shadow(0 4px 4px rgba(0,0,0,0.3));"></div>
+                    <div style="position:absolute; bottom:0; width:100%; padding:3px 0; text-align:center; color:white; font-size:0.8rem; font-weight:bold; background:#BF360C; font-family:'Fredoka', sans-serif;">👨‍👩‍👧‍👦 AİLE</div>
+                 </div>`
+    };
+    if (familyMap[item.tr]) {
+        return familyMap[item.tr];
+    }
+
+    // 4. TWEMOJI HIGH-RES VECTOR SVG (Hayvanlar, Meyveler, Aile, Mutfak)
+    const twemojiUrl = getTwemojiUrl(item.e);
+    if (twemojiUrl) {
+        return `<img src="${twemojiUrl}" alt="${item.tr}" class="word-img" onerror="this.outerHTML='<div class=\\'emoji\\'>${item.e}</div>'" style="width:100%; height:100%; object-fit:contain; filter: drop-shadow(0 5px 8px rgba(0,0,0,0.15)); transition: transform 0.2s;">`;
+    }
+
+    return `<div class="emoji">${item.e}</div>`;
+}
+
+function selectCategory(category) {
+    playClickSound();
+    currentCategory = category;
+    const stages = CATEGORY_STAGES[category];
+
+    // Kategorideki tüm kelimeleri topla - doğrudan seçilen dilden
+    const wordsSource = LANGUAGE_CONFIG[selectedLanguage].words();
+    showFeedback(category + " (" + selectedLanguage + ")"); // DEBUG
+    currentStageWords = wordsSource.filter(w => stages.includes(w.s));
+
+    document.getElementById('dashboard-title').textContent = CATEGORY_NAMES[category];
+    showScreen('stage-dashboard');
+}
+
+// --- AŞAMA SEÇİMİ ---
+const TOTAL_STAGES = 20;
+
+const STAGE_NAMES = {
+    1: { name: 'Selamlaşma', icon: '👋' },
+    2: { name: 'Sayılar', icon: '🔢' },
+    3: { name: 'Aile', icon: '👨‍👩‍👧' },
+    4: { name: 'Renkler', icon: '🌈' },
+    5: { name: 'Hayvanlar 1', icon: '🦁' },
+    6: { name: 'Hayvanlar 2', icon: '🦒' },
+    7: { name: 'Meyveler', icon: '🍎' },
+    8: { name: 'Yiyecekler', icon: '🍞' },
+    9: { name: 'Vücut', icon: '🧍' },
+    10: { name: 'Giysiler', icon: '👕' },
+    11: { name: 'Ev', icon: '🏠' },
+    12: { name: 'Ev Eşyaları', icon: '🪑' },
+    13: { name: 'Okul', icon: '🏫' },
+    14: { name: 'Meslekler', icon: '👨‍⚕️' },
+    15: { name: 'Yerler', icon: '🏙️' },
+    16: { name: 'Ulaşım', icon: '🚗' },
+    17: { name: 'Zaman', icon: '⏰' },
+    18: { name: 'Günler', icon: '📅' },
+    19: { name: 'Doğa', icon: '🌳' },
+    20: { name: 'Hava Durumu', icon: '🌤️' }
+};
+
+function initStageGrid() {
+    const grid = document.getElementById('stage-grid');
+    grid.innerHTML = ''; // Her seferinde yeniden oluştur
+
+    for (let i = 1; i <= TOTAL_STAGES; i++) {
+        const btn = document.createElement('button');
+        const isLocked = i > unlockedStage;
+
+        const stageInfo = STAGE_NAMES[i];
+        btn.className = 'stage-btn' + (isLocked ? ' locked' : '');
+
+        if (isLocked) {
+            btn.innerHTML = `<span class="stage-icon">🔒</span><span class="stage-name">???</span>`;
+        } else {
+            btn.innerHTML = `<span class="stage-icon">${stageInfo.icon}</span><span class="stage-name">${stageInfo.name}</span>`;
+        }
+        btn.disabled = isLocked;
+
+        if (!isLocked) {
+            btn.onclick = () => selectStage(i);
+        }
+
+        grid.appendChild(btn);
+    }
+}
+
+function selectStage(stageNum) {
+    if (stageNum > unlockedStage) {
+        showFeedback("Bu aşama kilitli! 🔒");
+        return;
+    }
+
+    playClickSound();
+    currentStage = stageNum;
+    currentCategory = null;
+    const wordsSource = LANGUAGE_CONFIG[selectedLanguage].words();
+    currentStageWords = wordsSource.filter(w => w.s === stageNum);
+
+    const stageInfo = STAGE_NAMES[stageNum];
+    document.getElementById('dashboard-title').textContent = `${stageInfo.icon} ${stageInfo.name}`;
+    showScreen('stage-dashboard');
+}
+
+// Artik kullanilmiyor - sadece kategoriler var
+
+
+// --- ETKİNLİK 1: ÖĞRENME MODU ---
+function startLearningMode() {
+    playClickSound();
+    showScreen('learn-screen');
+
+    const title = currentCategory ? CATEGORY_NAMES[currentCategory] : `📖 Aşama ${currentStage}`;
+    document.getElementById('learn-title').textContent = `${title} Kelimeleri`;
+
+    const container = document.getElementById('learn-content');
+    container.innerHTML = '';
+
+    const grid = document.createElement('div');
+    grid.className = 'learn-grid';
+
+    currentStageWords.forEach(item => {
+        const card = createLearnCard(item);
+        grid.appendChild(card);
+    });
+
+    container.appendChild(grid);
+}
+
+function createLearnCard(item) {
+    const card = document.createElement('div');
+    card.className = 'learn-card';
+    card.innerHTML = `
+        <div class="image-container" style="width: 120px; height: 120px; margin: 0 auto 10px auto;">
+            ${renderImageElement(item)}
+        </div>
+        <div class="ar-text">${item.ar}</div>
+        <div class="okunus">${item.ok}</div>
+        <div class="tr-text">${item.tr}</div>
+        <button class="sound-btn">🔊</button>
+    `;
+
+    card.querySelector('.sound-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        playClickSound();
+        speakWord(item.ar);
+    });
+
+    // Karta tıklayınca da ses çalsın
+    card.addEventListener('click', () => speakWord(item.ar));
+
+    return card;
+}
+
+
 // --- OYUN 1: KART EŞLEŞTİRME ---
-let cards = [];
 let flippedCards = [];
 let matchedPairs = 0;
+let memoryTotalPairs = 0;
 
 function startMemoryGame() {
+    playClickSound();
+    lastGameMode = 'memory';
     showScreen('game-memory');
+    resetGameStars();
+
+    // Dil adını güncelle
+    const langNames = { arabic: 'Arapça', english: 'İngilizce' };
+    const subtitle = document.getElementById('memory-subtitle');
+    if (subtitle) subtitle.textContent = `Resmi ${langNames[selectedLanguage]} ismiyle eşleştir!`;
+
     const grid = document.getElementById('memory-grid');
     grid.innerHTML = '';
     flippedCards = [];
     matchedPairs = 0;
 
-    let selected = [...vocab].sort(() => 0.5 - Math.random()).slice(0, 6);
+    // O anki kelimelerden rastgele 6 kelime seç
+    let pool = [...currentStageWords];
+    let selected = pool.sort(() => 0.5 - Math.random()).slice(0, 6);
+    memoryTotalPairs = selected.length;
 
     let deck = [];
     selected.forEach(item => {
-        deck.push({ id: item.id, type: 'emoji', content: item.emoji, data: item });
-        deck.push({ id: item.id, type: 'text', content: `<div class="arabic-text">${item.ar}</div><div style="font-size:0.6em">${item.tr_okunus}</div>`, data: item });
+        deck.push({ id: item.ar, type: 'emoji', content: `<div style="width: 100%; height: 100%; padding: 10px; box-sizing: border-box;">${renderImageElement(item)}</div>`, data: item });
+        const textClass = selectedLanguage === 'arabic' ? 'arabic-text' : 'foreign-text';
+        deck.push({ id: item.ar, type: 'text', content: `<div class="${textClass}">${item.ar}</div><div style="font-size:0.6em">${item.ok}</div>`, data: item });
     });
 
     deck.sort(() => 0.5 - Math.random());
@@ -89,7 +781,8 @@ function startMemoryGame() {
 function flipCard(cardElement, cardData) {
     if (cardElement.classList.contains('flipped') || flippedCards.length >= 2) return;
 
-    if (cardData.type === 'text') speakArabic(cardData.data.ar);
+    playClickSound();
+    if (cardData.type === 'text') speakWord(cardData.data.ar);
 
     cardElement.classList.add('flipped');
     flippedCards.push({ el: cardElement, data: cardData });
@@ -106,15 +799,20 @@ function checkMatch() {
         setTimeout(() => {
             c1.el.classList.add('matched');
             c2.el.classList.add('matched');
+            playCorrectSound();
             showFeedback("Doğru! 🎉");
-            if (c1.data.type === 'text') speakArabic(c1.data.data.ar);
-            else speakArabic(c2.data.data.ar);
+            addStar(1);
+            if (c1.data.type === 'text') speakWord(c1.data.data.ar);
+            else speakWord(c2.data.data.ar);
         }, 500);
         matchedPairs++;
-        if (matchedPairs === 6) {
-            setTimeout(() => showFeedback("Oyun Bitti! 🏆"), 1500);
+
+        // Oyun bitti mi?
+        if (matchedPairs === memoryTotalPairs) {
+            setTimeout(() => showGameComplete(), 1500);
         }
     } else {
+        playWrongSound();
         setTimeout(() => {
             c1.el.classList.remove('flipped');
             c2.el.classList.remove('flipped');
@@ -123,22 +821,41 @@ function checkMatch() {
     flippedCards = [];
 }
 
+
 // --- OYUN 2: DİNLE VE BUL ---
 let currentQuestionItem = null;
+let listeningCorrectCount = 0;
+let listeningTotalQuestions = 10;
 
 function startListeningGame() {
+    playClickSound();
+    lastGameMode = 'listening';
     showScreen('game-listening');
+    resetGameStars();
+    listeningCorrectCount = 0;
     nextListeningQuestion();
 }
 
 function nextListeningQuestion() {
-    let options = [...vocab].sort(() => 0.5 - Math.random()).slice(0, 3);
+    // 3 seçenek sun
+    let pool = [...currentStageWords];
+    let options = pool.sort(() => 0.5 - Math.random()).slice(0, 3);
+    let isAnswered = false; // Add flag to prevent multiple clicks
+
     currentQuestionItem = options[Math.floor(Math.random() * options.length)];
 
     const bubble = document.getElementById('listening-text');
-    bubble.innerHTML = `<div>Ben kimim?</div><div class="arabic-text" style="color: #0288D1; font-size: 3rem; margin-top:10px;">${currentQuestionItem.ar}</div><div style="font-size:1rem; color:#666;">(${currentQuestionItem.tr_okunus})</div>`;
+    bubble.innerHTML = `
+        <div>Bu ne?</div>
+        <div class="target-text ${selectedLanguage === 'arabic' ? 'arabic-text' : ''}" 
+             onclick="speakWord('${currentQuestionItem.ar}')" 
+             style="color: #0288D1; font-size: 3rem; margin-top:10px; cursor: pointer; user-select: none;">
+             ${currentQuestionItem.ar}
+        </div>
+        <div style="font-size:1rem; color:#666;">(Ses için tıkla)</div>
+    `;
 
-    setTimeout(() => speakArabic(currentQuestionItem.ar), 500);
+    setTimeout(() => speakWord(currentQuestionItem.ar), 500);
 
     const container = document.getElementById('listening-options');
     container.innerHTML = '';
@@ -146,139 +863,305 @@ function nextListeningQuestion() {
     options.forEach(opt => {
         const el = document.createElement('div');
         el.className = 'animal-option';
-        el.textContent = opt.emoji;
+        el.innerHTML = renderImageElement(opt);
         el.onclick = () => {
-            if (opt.id === currentQuestionItem.id) {
-                showFeedback("Aferin! 👏");
-                speakArabic("Mümtaz!");
-                setTimeout(nextListeningQuestion, 1500);
+            if (isAnswered) return; // Block if already answered
+
+            if (opt.ar === currentQuestionItem.ar) {
+                isAnswered = true; // Set flag
+                playCorrectSound();
+                showFeedback(`Aferin! 👏\n(${currentQuestionItem.tr})`);
+                addStar(1);
+                // speakWord("mumtaz"); // Sabit arapça yerine sadece ses efekti yeterli
+                listeningCorrectCount++;
+
+                if (listeningCorrectCount >= listeningTotalQuestions) {
+                    setTimeout(() => showGameComplete(), 1500);
+                } else {
+                    setTimeout(nextListeningQuestion, 1500);
+                }
             } else {
+                playWrongSound();
                 el.style.transform = "translateX(10px)";
                 setTimeout(() => el.style.transform = "none", 200);
-                speakArabic("La, havale marra uhra");
+                // speakWord("la"); // Sabit arapça yerine sadece ses efekti
             }
         };
         container.appendChild(el);
     });
 }
 
-// --- OYUN 3: RENKLER ORMANI ---
-let colorGameInterval = null;
-let targetColorObj = null;
 
-function startColorGame() {
+// --- OYUN 3: KELİME AVCISI (BOUNCING GAME) ---
+let bouncingObjects = [];
+let rafId = null;
+let targetBalloonItem = null;
+let balloonCorrectCount = 0;
+let balloonTotalTargets = 10;
+let activeBalloonWords = []; // Sadece ekrandaki kelimeler
+let balloonTimerInterval = null;
+let balloonTime = 0;
+
+function startBalloonGame() {
+    playClickSound();
+    lastGameMode = 'balloon';
     showScreen('game-colors');
-    const container = document.getElementById('game-colors');
-    document.querySelectorAll('.flying-object').forEach(e => e.remove());
+    resetGameStars();
+    balloonCorrectCount = 0;
 
-    setNewColorTarget();
+    // Önceki nesneleri temizle
+    bouncingObjects.forEach(obj => obj.element.remove());
+    bouncingObjects = [];
 
-    colorGameInterval = setInterval(() => {
-        spawnBalloon();
-    }, 1200);
+    // Kelime havuzunu sınırla (Max 8 kelime)
+    const poolSize = Math.min(8, currentStageWords.length);
+    activeBalloonWords = currentStageWords.slice(0, poolSize);
+
+    // Seçilen kelimelerden spawn et
+    activeBalloonWords.forEach(word => {
+        for (let i = 0; i < 2; i++) {
+            spawnBouncingObject(word);
+        }
+    });
+
+    // Hedef belirle (balonlar spawn edildikten SONRA!)
+    setNewBalloonTarget();
+
+    // Timer'ı başlat
+    balloonTime = 0;
+    const timerDisplay = document.getElementById('balloon-timer');
+    if (timerDisplay) {
+        timerDisplay.style.display = 'block';
+        timerDisplay.textContent = `Süre: ${balloonTime}`;
+    }
+
+    if (balloonTimerInterval) clearInterval(balloonTimerInterval);
+    balloonTimerInterval = setInterval(() => {
+        balloonTime++;
+        if (timerDisplay) {
+            timerDisplay.textContent = `Süre: ${balloonTime}`;
+        }
+    }, 1000);
+
+    // Animation loop başlat
+    if (rafId) cancelAnimationFrame(rafId);
+    animateBouncingObjects();
 }
 
-function stopColorGame() {
-    if (colorGameInterval) clearInterval(colorGameInterval);
-    document.querySelectorAll('.flying-object').forEach(e => e.remove());
+function stopBalloonGame() {
+    if (rafId) cancelAnimationFrame(rafId);
+    if (balloonTimerInterval) {
+        clearInterval(balloonTimerInterval);
+        balloonTimerInterval = null;
+    }
+    const timerDisplay = document.getElementById('balloon-timer');
+    if (timerDisplay) {
+        timerDisplay.style.display = 'none';
+    }
+    bouncingObjects.forEach(obj => obj.element.remove());
+    bouncingObjects = [];
 }
 
-function setNewColorTarget() {
-    targetColorObj = colorsInfo[Math.floor(Math.random() * colorsInfo.length)];
-    const display = document.getElementById('target-word');
-    display.textContent = targetColorObj.ar;
-    display.style.color = targetColorObj.code;
-    document.getElementById('color-target-display').innerHTML = `Hedef: <span class="arabic-text" style="font-weight:bold; color:${targetColorObj.code}; font-size:1.5rem;">${targetColorObj.ar}</span> (${targetColorObj.okunus})`;
+function setNewBalloonTarget() {
+    // Sadece aktif (ekranda olan) balonlardan hedef seç
+    // bouncingObjects boşsa hata vermesin diye kontrol ekle
+    if (bouncingObjects.length === 0) {
+        // Eğer balon kalmadıysa ama hedef sayıya ulaşılmadıysa yeniden spawn etmek gerekebilir
+        // Şimdilik oyunu bitirebiliriz veya mevcut akışta balonlar bitmeden oyun bitiyor genelde.
+        return;
+    }
 
-    speakArabic(targetColorObj.ar);
+    // Benzersiz kelimeleri al
+    const availableWords = [...new Set(bouncingObjects.map(obj => obj.word))];
+    targetBalloonItem = availableWords[Math.floor(Math.random() * availableWords.length)];
+
+    const targetDisplay = document.getElementById('color-target-display');
+    const targetTextClass = selectedLanguage === 'arabic' ? 'arabic-text' : 'foreign-text';
+    targetDisplay.innerHTML = `
+        <div style="width: 100px; height: 100px; margin: 0 auto 5px auto;">${renderImageElement(targetBalloonItem)}</div>
+        <div style="text-align: center;">
+            Hedef: <span class="${targetTextClass}" style="font-weight:bold; color:red; font-size:1.6rem;">${targetBalloonItem.ar}</span> 
+            <br><span style="font-size: 0.9rem; color: #555;">(${targetBalloonItem.ok})</span>
+        </div>
+    `;
+
+    speakWord(targetBalloonItem.ar);
 }
 
-function spawnBalloon() {
-    if (!document.getElementById('game-colors').classList.contains('active')) return;
+// --- ÇOK DİLLİ SES SENTEZİ ---
+function speakWord(text) {
+    if (!text) return;
 
+    // Web Speech API desteği kontrolü
+    if (!window.speechSynthesis) return;
+
+    // Önceki konuşmayı iptal et
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    const langCode = LANGUAGE_CONFIG[selectedLanguage].voice; // 'ar', 'en', 'de'
+
+    utterance.lang = langCode;
+    utterance.rate = 0.9; // Biraz yavaş konuşsun
+
+    // Uygun sesi bulmaya çalış
+    const voices = window.speechSynthesis.getVoices();
+    const specificVoice = voices.find(v => v.lang.startsWith(langCode));
+    if (specificVoice) {
+        utterance.voice = specificVoice;
+    }
+
+    window.speechSynthesis.speak(utterance);
+}
+
+// Sesleri yükle (bazı tarayıcılar için gerekli)
+if (window.speechSynthesis) {
+    window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+    };
+}
+
+function spawnBouncingObject(wordItem) {
     const container = document.getElementById('game-colors');
     const el = document.createElement('div');
-    el.className = 'flying-object';
+    el.className = 'bouncing-object';
+    el.style.width = '100px';
+    el.style.height = '100px';
+    el.innerHTML = renderImageElement(wordItem);
 
-    const randColor = colorsInfo[Math.floor(Math.random() * colorsInfo.length)];
-    let emoji = '🎈';
-    if (randColor.id === 'red') emoji = '🔴';
-    if (randColor.id === 'blue') emoji = '🔵';
-    if (randColor.id === 'green') emoji = '🟢';
-    if (randColor.id === 'yellow') emoji = '🟡';
-
-    el.textContent = emoji;
-    el.style.left = Math.random() * 80 + 10 + '%';
-    el.style.fontSize = (Math.random() * 2 + 3) + 'rem';
-
-    let speed = Math.random() * 4 + 4;
-    el.style.animationDuration = speed + 's';
-
-    el.onclick = () => {
-        if (randColor.id === targetColorObj.id) {
-            el.classList.add('pop-anim');
-            showFeedback("Yakaladın! ✨");
-            speakArabic(randColor.ar);
-            setTimeout(() => el.remove(), 300);
-            setTimeout(() => setNewColorTarget(), 1000);
-        } else {
-            el.style.opacity = 0.5;
-        }
+    // Rastgele başlangıç pozisyonu ve hız
+    const obj = {
+        element: el,
+        word: wordItem,
+        x: Math.random() * (window.innerWidth - 100),
+        y: Math.random() * (window.innerHeight - 100),
+        vx: (Math.random() - 0.5) * 2 + (Math.random() < 0.5 ? -1 : 1),
+        vy: (Math.random() - 0.5) * 2 + (Math.random() < 0.5 ? -1 : 1)
     };
 
+    el.onclick = () => handleBouncingClick(obj);
     container.appendChild(el);
+    bouncingObjects.push(obj);
 
-    setTimeout(() => {
-        if (el.parentNode) el.remove();
-    }, speed * 1000);
+    // İlk pozisyonu ayarla
+    el.style.left = obj.x + 'px';
+    el.style.top = obj.y + 'px';
 }
 
-// --- ÖĞRENME MODU (50 AŞAMA) ---
-const TOTAL_STAGES = 20;
+function handleBouncingClick(obj) {
+    if (obj.word.ar === targetBalloonItem.ar) {
+        playCorrectSound();
+        obj.element.classList.add('pop-anim');
+        showFeedback("Yakaladın! ✨");
+        addStar(1);
+        balloonCorrectCount++;
 
-function startLearningMode() {
-    showScreen('stage-select');
-    const grid = document.getElementById('stage-grid');
-    grid.innerHTML = '';
+        setTimeout(() => {
+            const index = bouncingObjects.indexOf(obj);
+            if (index > -1) {
+                obj.element.remove();
+                bouncingObjects.splice(index, 1);
+            }
+        }, 300);
 
-    for (let i = 1; i <= TOTAL_STAGES; i++) {
-        const btn = document.createElement('button');
-        btn.className = 'stage-btn';
-        btn.textContent = i;
-        btn.onclick = () => startStage(i);
-        grid.appendChild(btn);
+        if (balloonCorrectCount >= balloonTotalTargets) {
+            setTimeout(() => showGameComplete(), 1500);
+        } else {
+            setTimeout(() => setNewBalloonTarget(), 1000);
+        }
+    } else {
+        playWrongSound();
+        // Yanlış nesne - titret
+        obj.element.style.opacity = '0.5';
+        setTimeout(() => {
+            obj.element.style.opacity = '1';
+        }, 200);
     }
 }
 
-function startStage(stageNum) {
-    showScreen('learn-screen');
-    document.getElementById('learn-title').textContent = `📖 Aşama ${stageNum}`;
+function animateBouncingObjects() {
+    if (!document.getElementById('game-colors').classList.contains('active')) {
+        stopBalloonGame();
+        return;
+    }
 
-    const container = document.getElementById('learn-content');
-    container.innerHTML = '';
+    const container = document.getElementById('game-colors');
+    const bounds = container.getBoundingClientRect();
 
-    const stageWords = arabicWords.filter(w => w.s === stageNum);
+    bouncingObjects.forEach(obj => {
+        // Pozisyon güncelle
+        obj.x += obj.vx;
+        obj.y += obj.vy;
 
-    const grid = document.createElement('div');
-    grid.className = 'learn-grid';
+        const size = 80;
 
-    stageWords.forEach(item => {
-        const card = createLearnCard(item.e, item.ar, item.ok, item.tr);
-        grid.appendChild(card);
+        // Kenar çarpma kontrolü
+        if (obj.x <= 0) {
+            obj.x = 0;
+            obj.vx *= -1;
+        } else if (obj.x >= bounds.width - size) {
+            obj.x = bounds.width - size;
+            obj.vx *= -1;
+        }
+
+        if (obj.y <= 0) {
+            obj.y = 0;
+            obj.vy *= -1;
+        } else if (obj.y >= bounds.height - size) {
+            obj.y = bounds.height - size;
+            obj.vy *= -1;
+        }
+
+        // DOM güncelle
+        obj.element.style.left = obj.x + 'px';
+        obj.element.style.top = obj.y + 'px';
     });
 
-    container.appendChild(grid);
+    rafId = requestAnimationFrame(animateBouncingObjects);
 }
 
-function createLearnCard(emoji, arText, okunus, trText) {
-    const card = document.createElement('div');
-    card.className = 'learn-card';
-    card.innerHTML = `
-        <div class="emoji">${emoji}</div>
-        <div class="ar-text">${arText}</div>
-        <div class="okunus">${okunus}</div>
-        <div class="tr-text">${trText}</div>
-        <button class="sound-btn" onclick="event.stopPropagation(); speakArabic('${arText}')">🔊</button>
-    `;
-    return card;
+
+// --- OYUN BİTTİ ---
+function showGameComplete() {
+    stopBalloonGame();
+    playCelebrationSound();
+    showConfetti();
+
+    // Aşama modundaysa sonraki aşamayı aç
+    if (!currentCategory && currentStage >= unlockedStage && currentStage < TOTAL_STAGES) {
+        unlockedStage = currentStage + 1;
+    }
+
+    const messages = [
+        "Harika iş çıkardın! 🌟",
+        "Sen bir yıldızsın! ⭐",
+        "Muhteşemsin! 🏆",
+        "Çok güzel! 👏",
+        "Aferin sana! 🎉"
+    ];
+
+    document.getElementById('complete-message').textContent =
+        messages[Math.floor(Math.random() * messages.length)];
+
+    showScreen('game-complete');
 }
+
+function playAgain() {
+    playClickSound();
+
+    switch (lastGameMode) {
+        case 'memory':
+            startMemoryGame();
+            break;
+        case 'listening':
+            startListeningGame();
+            break;
+        case 'balloon':
+            startBalloonGame();
+            break;
+        default:
+            showScreen('stage-dashboard');
+    }
+}
+
+
