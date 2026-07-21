@@ -10,8 +10,10 @@
 
 body {
     font-family: 'Fredoka', 'Segoe UI', sans-serif;
-    overflow: hidden;
-    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    min-height: 100vh;
+    height: 100%;
     background: linear-gradient(180deg, #87CEEB 0%, #E0F7FA 100%);
 }
 
@@ -19,13 +21,18 @@ body {
 .screen {
     display: none;
     width: 100%;
+    min-height: 100vh;
     height: 100%;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     position: absolute;
     top: 0;
     left: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 20px 10px 40px 10px;
+    -webkit-overflow-scrolling: touch;
 }
 
 .screen.active {
@@ -1744,14 +1751,18 @@ h1 {
 /* --- YENİ ANA MENÜ TASARIMI (EĞLENCELİ KARTLAR) --- */
 .garden-menu-scene {
     width: 100%;
-    height: 100%;
+    min-height: 100%;
     background: linear-gradient(180deg, #FFF3E0 0%, #F1F8E9 100%);
     /* Sıcak, yumuşak geçiş */
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
     position: relative;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px 10px 60px 10px;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* Arka plan süsleri (Silik Patronlar) */
@@ -1914,24 +1925,136 @@ h1 {
     box-shadow: 0 2px 5px rgba(41, 121, 255, 0.3);
 }
 
-/* Mobil */
-@media (max-width: 600px) {
-    .category-fun-grid {
-        gap: 15px;
+/* Mobil Ekran Sığdırma & Boyutlandırma İyileştirmeleri */
+@media (max-width: 650px) {
+    /* Sabit İkonlar / Butonlar */
+    .home-btn {
+        width: 46px;
+        height: 46px;
+        font-size: 1.3rem;
+        top: 8px;
+        left: 8px;
     }
 
-    .category-card-fun {
-        width: 130px;
-        height: 140px;
+    .star-counter {
+        padding: 5px 12px;
+        font-size: 1.1rem;
+        top: 8px;
+        right: 8px;
     }
 
-    .category-card-fun .fun-icon {
-        font-size: 3.5rem;
+    /* Ana Menü */
+    .menu-title-fun {
+        margin-top: 45px;
+        margin-bottom: 15px;
     }
 
     .menu-title-fun h1 {
-        font-size: 1.5rem;
-        padding: 8px 20px;
+        font-size: 1.3rem;
+        padding: 6px 18px;
+    }
+
+    .category-fun-grid {
+        gap: 12px;
+        max-width: 100%;
+        padding: 5px;
+    }
+
+    .category-card-fun {
+        width: calc(50% - 10px);
+        max-width: 155px;
+        height: 125px;
+        border-radius: 22px;
+    }
+
+    .category-card-fun .fun-icon {
+        font-size: 2.5rem;
+        margin-bottom: 4px;
+    }
+
+    .category-card-fun .fun-icon img.emoji {
+        width: 45px;
+        height: 45px;
+    }
+
+    .category-card-fun span.label {
+        font-size: 0.95rem;
+    }
+
+    .bottom-nav-btn {
+        margin-top: 20px;
+        margin-bottom: 35px;
+        padding: 12px 24px;
+        font-size: 1rem;
+    }
+
+    /* Balonlu Dil Seçim Ekranı */
+    .garden-title {
+        margin-top: 45px;
+    }
+
+    .garden-title h1 {
+        font-size: 1.25rem;
+        padding: 8px 15px;
+    }
+
+    .balloons-container {
+        gap: 15px;
+        padding-top: 10px;
+        margin-bottom: 40px;
+    }
+
+    .balloon-body {
+        width: 125px;
+        height: 150px;
+    }
+
+    /* Eşleştirme Oyunu */
+    #game-memory {
+        padding-top: 65px;
+    }
+
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding: 10px;
+        max-width: 100%;
+    }
+
+    .card {
+        height: 110px;
+        font-size: 2.3rem;
+        border-radius: 16px;
+    }
+
+    /* Öğrenme Modu */
+    #learn-screen {
+        padding-top: 65px;
+    }
+
+    .learn-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .learn-card {
+        padding: 10px;
+    }
+
+    .learn-card .ar-text {
+        font-size: 1.4rem;
+    }
+
+    /* Aşama Seçim */
+    #stage-select {
+        padding-top: 65px;
+    }
+
+    .stage-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding: 10px;
     }
 }
 
