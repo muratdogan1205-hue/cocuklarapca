@@ -4,9 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#87CEEB">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>🌺ELİF İNCİ'NİN DİLLER BAHÇESİ 🌺</title>
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch(() => {});
+            });
+        }
+    </script>
 </head>
 
 <body>
@@ -130,8 +141,8 @@
                     <span class="label">Mutfak</span>
                 </div>
 
-                <!-- Temel Cümleler -->
-                <div class="category-card-fun style-phrases" onclick="selectCategory('phrases')">
+                <!-- Cümleler -->
+                <div class="category-card-fun style-sentences" onclick="selectCategory('sentences')">
                     <div class="fun-icon"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f4ac.svg" style="width:60px; height:60px;" alt="Cümleler"></div>
                     <span class="label">Cümleler</span>
                 </div>
@@ -171,64 +182,6 @@
         <!-- Balonlar JS ile uçacak -->
     </div>
 
-    <!-- EKRAN 4.5: KELİME TRENİ OYUNU -->
-    <div id="game-train" class="screen">
-        <div class="train-sky-area">
-            <div class="train-progress-badge" id="train-progress">⭐ Vagonlar: 0 / 10 Doldu</div>
-            <div class="target-balloon-wrapper" id="train-balloon-target" onclick="pronounceTrainTarget()">
-                <div class="target-balloon-body">
-                    <div class="balloon-word" id="train-target-word">Hedef Kelime</div>
-                    <div class="balloon-phonetic" id="train-target-phonetic">okunuş</div>
-                    <div class="balloon-speaker-icon">🔊</div>
-                </div>
-                <div class="target-balloon-rope"></div>
-                <div class="target-balloon-basket">🧺</div>
-            </div>
-            <p class="train-instruction-text" id="train-instruction">Balondaki kelimeyi uygun vagona koy!</p>
-        </div>
-
-        <div class="train-track-container" id="train-track-container">
-            <div class="train-convoy" id="train-convoy">
-                <!-- Gülen Lokomotif -->
-                <div class="train-locomotive" id="train-locomotive">
-                    <div class="locomotive-smoke-container">
-                        <div class="puff p1">💨</div>
-                        <div class="puff p2">💨</div>
-                    </div>
-                    <div class="locomotive-chimney"></div>
-                    <div class="locomotive-body">
-                        <div class="locomotive-cab">
-                            <div class="cab-window"></div>
-                        </div>
-                        <div class="locomotive-face">
-                            <div class="train-eye left-eye"><div class="pupil"></div></div>
-                            <div class="train-eye right-eye"><div class="pupil"></div></div>
-                            <div class="train-cheeks left-cheek"></div>
-                            <div class="train-cheeks right-cheek"></div>
-                            <div class="train-smile"></div>
-                        </div>
-                    </div>
-                    <div class="locomotive-wheels">
-                        <div class="wheel big-wheel"></div>
-                        <div class="wheel small-wheel"></div>
-                        <div class="wheel small-wheel"></div>
-                    </div>
-                    <div class="locomotive-pilot"></div>
-                </div>
-
-                <!-- 10 Vagon JS ile gelecek -->
-                <div class="train-wagons-list" id="train-wagons-list">
-                </div>
-            </div>
-            <!-- Tren Rayları -->
-            <div class="train-tracks">
-                <div class="rail-bar rail-top"></div>
-                <div class="rail-bar rail-bottom"></div>
-                <div class="sleepers-row"></div>
-            </div>
-        </div>
-    </div>
-
     <!-- EKRAN 5.5: KATEGORİ PANELİ (Oyun/Etkinlik Seçimi) -->
     <div id="stage-dashboard" class="screen">
         <div class="menu-title-container">
@@ -256,11 +209,6 @@
                 onclick="startBalloonGame()">
                 <span class="mode-icon">⚡</span>
                 <span class="mode-label">Kelime Avcısı</span>
-            </button>
-            <button class="game-mode-btn" style="background: linear-gradient(135deg, #E91E63, #C2185B);"
-                onclick="startTrainGame()">
-                <span class="mode-icon">🚂</span>
-                <span class="mode-label">Kelime Treni</span>
             </button>
         </div>
 

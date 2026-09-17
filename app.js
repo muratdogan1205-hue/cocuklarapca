@@ -375,14 +375,11 @@ function showScreen(id) {
     const homeBtn = document.getElementById('home-btn');
     const starCounter = document.getElementById('star-counter');
 
-    // Oyun ekranları dışına çıkıldığında oyunları durdur
-    if (id !== 'game-colors') stopBalloonGame();
-    if (id !== 'game-train' && typeof stopTrainGame === 'function') stopTrainGame();
-
     // Ana menü veya dil seçiminde geri tuşu ve yıldız sayacı gizle
     if (id === 'main-menu' || id === 'language-screen') {
         homeBtn.style.display = 'none';
         starCounter.style.display = 'none';
+        stopBalloonGame();
     } else if (id === 'game-complete') {
         homeBtn.style.display = 'none';
         starCounter.style.display = 'none';
@@ -434,7 +431,7 @@ const CATEGORY_STAGES = {
     numbers: [2],     // Sayılar
     shapes: [21],     // Şekiller
     kitchen: [22],    // Mutfak
-    phrases: [23]     // Temel Cümleler
+    sentences: [23]   // Cümleler
 };
 
 const CATEGORY_NAMES = {
@@ -445,7 +442,7 @@ const CATEGORY_NAMES = {
     numbers: '🔢 Sayılar',
     shapes: '🔺 Şekiller',
     kitchen: '🥣 Mutfak',
-    phrases: '💬 Temel Cümleler'
+    sentences: '💬 Cümleler'
 };
 
 // --- YÜKSEK ÇÖZÜNÜRLÜKLÜ GÖRSEL VE İKON SİSTEMİ ---
@@ -588,12 +585,24 @@ function renderImageElement(item) {
                     <div style="margin-bottom:8px;"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f46a.svg" style="width:65px;height:65px;filter:drop-shadow(0 4px 4px rgba(0,0,0,0.3));"></div>
                     <div style="position:absolute; bottom:0; width:100%; padding:3px 0; text-align:center; color:white; font-size:0.8rem; font-weight:bold; background:#BF360C; font-family:'Fredoka', sans-serif;">👨‍👩‍👧‍👦 AİLE</div>
                  </div>`
+    // 5. TEMEL CÜMLELER (Renkli Konuşma Balonu Kartları)
+    const sentenceMap = {
+        'Merhaba! Nasılsın?': `<div style="background: linear-gradient(135deg, #42A5F5, #1E88E5); border: 3px solid #1565C0; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:5px; box-shadow:0 4px 10px rgba(0,0,0,0.15);"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f4ac.svg" style="width:50px;height:50px;margin-bottom:4px;"><span style="color:white; font-size:0.75rem; font-weight:bold; text-align:center; font-family:'Fredoka', sans-serif;">💬 MERHABA</span></div>`,
+        'Günaydın!': `<div style="background: linear-gradient(135deg, #FFB74D, #F57C00); border: 3px solid #E65100; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:5px; box-shadow:0 4px 10px rgba(0,0,0,0.15);"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f305.svg" style="width:50px;height:50px;margin-bottom:4px;"><span style="color:white; font-size:0.75rem; font-weight:bold; text-align:center; font-family:'Fredoka', sans-serif;">🌅 GÜNAYDIN</span></div>`,
+        'İyi geceler!': `<div style="background: linear-gradient(135deg, #5C6BC0, #283593); border: 3px solid #1A237E; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:5px; box-shadow:0 4px 10px rgba(0,0,0,0.15);"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f31c.svg" style="width:50px;height:50px;margin-bottom:4px;"><span style="color:white; font-size:0.75rem; font-weight:bold; text-align:center; font-family:'Fredoka', sans-serif;">🌙 İYİ GECELER</span></div>`,
+        'Teşekkür ederim!': `<div style="background: linear-gradient(135deg, #EC407A, #AD1457); border: 3px solid #880E4F; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:5px; box-shadow:0 4px 10px rgba(0,0,0,0.15);"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f64f.svg" style="width:50px;height:50px;margin-bottom:4px;"><span style="color:white; font-size:0.75rem; font-weight:bold; text-align:center; font-family:'Fredoka', sans-serif;">🙏 TEŞEKKÜRLER</span></div>`,
+        'Lütfen!': `<div style="background: linear-gradient(135deg, #AB47BC, #6A1B9A); border: 3px solid #4A148C; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:5px; box-shadow:0 4px 10px rgba(0,0,0,0.15);"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/2728.svg" style="width:50px;height:50px;margin-bottom:4px;"><span style="color:white; font-size:0.75rem; font-weight:bold; text-align:center; font-family:'Fredoka', sans-serif;">✨ LÜTFEN</span></div>`,
+        'Görüşürüz!': `<div style="background: linear-gradient(135deg, #26A69A, #00695C); border: 3px solid #004D40; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:5px; box-shadow:0 4px 10px rgba(0,0,0,0.15);"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f44b.svg" style="width:50px;height:50px;margin-bottom:4px;"><span style="color:white; font-size:0.75rem; font-weight:bold; text-align:center; font-family:'Fredoka', sans-serif;">👋 GÖRÜŞÜRÜZ</span></div>`,
+        'Benim adım Elif.': `<div style="background: linear-gradient(135deg, #FF7043, #D84315); border: 3px solid #BF360C; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:5px; box-shadow:0 4px 10px rgba(0,0,0,0.15);"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f467.svg" style="width:50px;height:50px;margin-bottom:4px;"><span style="color:white; font-size:0.75rem; font-weight:bold; text-align:center; font-family:'Fredoka', sans-serif;">👧 ADIM ELİF</span></div>`,
+        'Seni seviyorum!': `<div style="background: linear-gradient(135deg, #EF5350, #C62828); border: 3px solid #B71C1C; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:5px; box-shadow:0 4px 10px rgba(0,0,0,0.15);"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/2764.svg" style="width:50px;height:50px;margin-bottom:4px;"><span style="color:white; font-size:0.75rem; font-weight:bold; text-align:center; font-family:'Fredoka', sans-serif;">❤️ SEVİYORUM</span></div>`,
+        'Hoş geldiniz!': `<div style="background: linear-gradient(135deg, #66BB6A, #2E7D32); border: 3px solid #1B5E20; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:5px; box-shadow:0 4px 10px rgba(0,0,0,0.15);"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f33a.svg" style="width:50px;height:50px;margin-bottom:4px;"><span style="color:white; font-size:0.75rem; font-weight:bold; text-align:center; font-family:'Fredoka', sans-serif;">🌺 HOŞ GELDİNİZ</span></div>`,
+        'İyi günler!': `<div style="background: linear-gradient(135deg, #FFEE58, #FBC02D); border: 3px solid #F57F17; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:5px; box-shadow:0 4px 10px rgba(0,0,0,0.15);"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/2600.svg" style="width:50px;height:50px;margin-bottom:4px;"><span style="color:#333; font-size:0.75rem; font-weight:bold; text-align:center; font-family:'Fredoka', sans-serif;">☀️ İYİ GÜNLER</span></div>`
     };
-    if (familyMap[item.tr]) {
-        return familyMap[item.tr];
+    if (sentenceMap[item.tr]) {
+        return sentenceMap[item.tr];
     }
 
-    // 4. TWEMOJI HIGH-RES VECTOR SVG (Hayvanlar, Meyveler, Aile, Mutfak)
+    // 6. TWEMOJI HIGH-RES VECTOR SVG (Hayvanlar, Meyveler, Aile, Mutfak)
     const twemojiUrl = getTwemojiUrl(item.e);
     if (twemojiUrl) {
         return `<img src="${twemojiUrl}" alt="${item.tr}" class="word-img" onerror="this.outerHTML='<div class=\\'emoji\\'>${item.e}</div>'" style="width:100%; height:100%; object-fit:contain; filter: drop-shadow(0 5px 8px rgba(0,0,0,0.15)); transition: transform 0.2s;">`;
@@ -604,14 +613,28 @@ function renderImageElement(item) {
 
 function selectCategory(category) {
     playClickSound();
+    if (!category) return;
+    
     currentCategory = category;
-    const stages = CATEGORY_STAGES[category];
+    const stages = CATEGORY_STAGES[category] || [];
 
-    // Kategorideki tüm kelimeleri topla - doğrudan seçilen dilden
-    const wordsSource = LANGUAGE_CONFIG[selectedLanguage].words();
+    if (!selectedLanguage) {
+        selectedLanguage = 'arabic';
+    }
+
+    let wordsSource = [];
+    if (typeof LANGUAGE_CONFIG !== 'undefined' && LANGUAGE_CONFIG[selectedLanguage] && typeof LANGUAGE_CONFIG[selectedLanguage].words === 'function') {
+        wordsSource = LANGUAGE_CONFIG[selectedLanguage].words();
+    } else {
+        wordsSource = (selectedLanguage === 'english') ? englishWords : arabicWords;
+    }
+
     currentStageWords = wordsSource.filter(w => stages.includes(w.s));
 
-    document.getElementById('dashboard-title').textContent = CATEGORY_NAMES[category];
+    const titleEl = document.getElementById('dashboard-title');
+    if (titleEl) {
+        titleEl.textContent = CATEGORY_NAMES[category] || category;
+    }
     showScreen('stage-dashboard');
 }
 
@@ -712,12 +735,11 @@ function startLearningMode() {
 function createLearnCard(item) {
     const card = document.createElement('div');
     card.className = 'learn-card';
-    const langClass = selectedLanguage === 'arabic' ? 'ar-text' : 'ar-text en-text';
     card.innerHTML = `
         <div class="image-container" style="width: 120px; height: 120px; margin: 0 auto 10px auto;">
             ${renderImageElement(item)}
         </div>
-        <div class="${langClass}">${item.ar}</div>
+        <div class="ar-text">${item.ar}</div>
         <div class="okunus">${item.ok}</div>
         <div class="tr-text">${item.tr}</div>
         <button class="sound-btn">🔊</button>
@@ -849,16 +871,12 @@ function nextListeningQuestion() {
 
     currentQuestionItem = options[Math.floor(Math.random() * options.length)];
 
-    const questionPrompt = currentCategory === 'phrases' ? 'Bu ifade hangisi?' : 'Bu ne?';
-    const targetSize = currentQuestionItem.ar.length > 12 ? '2.2rem' : '3rem';
-    const escapedAr = currentQuestionItem.ar.replace(/'/g, "\\'");
-
     const bubble = document.getElementById('listening-text');
     bubble.innerHTML = `
-        <div>${questionPrompt}</div>
+        <div>Bu ne?</div>
         <div class="target-text ${selectedLanguage === 'arabic' ? 'arabic-text' : ''}" 
-             onclick="speakWord('${escapedAr}')" 
-             style="color: #0288D1; font-size: ${targetSize}; margin-top:10px; cursor: pointer; user-select: none;">
+             onclick="speakWord('${currentQuestionItem.ar}')" 
+             style="color: #0288D1; font-size: 3rem; margin-top:10px; cursor: pointer; user-select: none;">
              ${currentQuestionItem.ar}
         </div>
         <div style="font-size:1rem; color:#666;">(Ses için tıkla)</div>
@@ -989,7 +1007,7 @@ function setNewBalloonTarget() {
     targetDisplay.innerHTML = `
         <div style="width: 100px; height: 100px; margin: 0 auto 5px auto;">${renderImageElement(targetBalloonItem)}</div>
         <div style="text-align: center;">
-            Hedef: <span class="${targetTextClass}" style="font-weight:bold; color:#0288D1; font-size:1.6rem;">${targetBalloonItem.ar}</span> 
+            Hedef: <span class="${targetTextClass}" style="font-weight:bold; color:red; font-size:1.6rem;">${targetBalloonItem.ar}</span> 
             <br><span style="font-size: 0.9rem; color: #555;">(${targetBalloonItem.ok})</span>
         </div>
     `;
@@ -1168,277 +1186,9 @@ function playAgain() {
         case 'balloon':
             startBalloonGame();
             break;
-        case 'train':
-            startTrainGame();
-            break;
         default:
             showScreen('stage-dashboard');
     }
-}
-
-// --- OYUN 4: NEŞELİ KELİME TRENİ ---
-let trainWagonItems = [];
-let currentTrainTarget = null;
-let trainLoadedCount = 0;
-let trainTotalWagons = 10;
-let isTrainProcessing = false;
-let isTrainDeparting = false;
-
-// Buharlı tren düdüğü sesi
-function playTrainWhistleSound() {
-    try {
-        const ctx = initAudioContext();
-        const now = ctx.currentTime;
-        const freqs = [440, 554.37]; // A4 ve C#5 - Klasik neşeli tren akoru
-
-        freqs.forEach(freq => {
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            const filter = ctx.createBiquadFilter();
-
-            osc.type = 'sawtooth';
-            filter.type = 'lowpass';
-            filter.frequency.setValueAtTime(1400, now);
-
-            osc.connect(filter);
-            filter.connect(gain);
-            gain.connect(ctx.destination);
-
-            osc.frequency.setValueAtTime(freq, now);
-            osc.frequency.linearRampToValueAtTime(freq * 1.02, now + 0.15);
-            osc.frequency.linearRampToValueAtTime(freq, now + 0.35);
-
-            gain.gain.setValueAtTime(0, now);
-            gain.gain.linearRampToValueAtTime(0.18, now + 0.05);
-            gain.gain.linearRampToValueAtTime(0.12, now + 0.22);
-            gain.gain.linearRampToValueAtTime(0.2, now + 0.30);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.65);
-
-            osc.start(now);
-            osc.stop(now + 0.65);
-        });
-    } catch (e) {
-        console.log('Düdük sesi çalınamadı');
-    }
-}
-
-function stopTrainGame() {
-    isTrainProcessing = false;
-    isTrainDeparting = false;
-    const convoy = document.getElementById('train-convoy');
-    if (convoy) {
-        convoy.classList.remove('departing');
-        convoy.style.transform = '';
-    }
-}
-
-function startTrainGame() {
-    playClickSound();
-    lastGameMode = 'train';
-    showScreen('game-train');
-    resetGameStars();
-    stopTrainGame();
-
-    trainLoadedCount = 0;
-    isTrainProcessing = false;
-    isTrainDeparting = false;
-
-    // Kategori kelimelerinden 10 tanesini seç
-    let pool = [...currentStageWords];
-    trainWagonItems = pool.sort(() => 0.5 - Math.random()).slice(0, 10);
-    trainTotalWagons = trainWagonItems.length;
-
-    // Vagonları oluştur
-    renderTrainWagons();
-
-    // İlk hedefi belirle
-    setNextTrainTarget();
-
-    // Başlangıç düdüğü
-    setTimeout(() => {
-        playTrainWhistleSound();
-    }, 300);
-}
-
-function renderTrainWagons() {
-    const list = document.getElementById('train-wagons-list');
-    if (!list) return;
-    list.innerHTML = '';
-
-    const wagonColors = [
-        { top: '#FF5252', body: '#D32F2F' }, // Kırmızı
-        { top: '#FFA726', body: '#F57C00' }, // Turuncu
-        { top: '#FFEE58', body: '#FBC02D' }, // Sarı
-        { top: '#66BB6A', body: '#388E3C' }, // Yeşil
-        { top: '#26A69A', body: '#00796B' }, // Turkuaz
-        { top: '#42A5F5', body: '#1976D2' }, // Mavi
-        { top: '#AB47BC', body: '#7B1FA2' }, // Mor
-        { top: '#EC407A', body: '#C2185B' }, // Pembe
-        { top: '#8D6E63', body: '#5D4037' }, // Kahve
-        { top: '#78909C', body: '#455A64' }  // Çelik Mavi
-    ];
-
-    trainWagonItems.forEach((item, index) => {
-        const wagonColor = wagonColors[index % wagonColors.length];
-        const wagonEl = document.createElement('div');
-        wagonEl.className = 'train-wagon';
-        wagonEl.id = `wagon-${index}`;
-        wagonEl.dataset.index = index;
-
-        wagonEl.innerHTML = `
-            <div class="wagon-coupling"></div>
-            <div class="wagon-box" style="background: linear-gradient(180deg, ${wagonColor.top}, ${wagonColor.body});">
-                <div class="wagon-roof-rim"></div>
-                <div class="wagon-number-badge">${index + 1}</div>
-                <div class="wagon-cargo-slot">
-                    <div class="wagon-visual">${renderImageElement(item)}</div>
-                    <div class="wagon-loaded-badge">✅</div>
-                </div>
-                <div class="wagon-label-slot">${item.tr}</div>
-            </div>
-            <div class="wagon-wheels-bar">
-                <div class="wagon-wheel w1"></div>
-                <div class="wagon-wheel w2"></div>
-            </div>
-        `;
-
-        wagonEl.onclick = () => handleWagonClick(index, item, wagonEl);
-        list.appendChild(wagonEl);
-    });
-
-    if (window.twemoji) {
-        twemoji.parse(list, {
-            folder: 'svg',
-            ext: '.svg'
-        });
-    }
-
-    updateTrainProgressDisplay();
-}
-
-function updateTrainProgressDisplay() {
-    const badge = document.getElementById('train-progress');
-    if (badge) {
-        badge.textContent = `⭐ Vagonlar: ${trainLoadedCount} / ${trainTotalWagons} Doldu`;
-    }
-}
-
-function setNextTrainTarget() {
-    // Henüz yüklenmemiş vagonların kelimelerini bul
-    const unfilled = trainWagonItems.filter((_, idx) => {
-        const el = document.getElementById(`wagon-${idx}`);
-        return el && !el.classList.contains('loaded');
-    });
-
-    if (unfilled.length === 0) {
-        animateTrainDeparture();
-        return;
-    }
-
-    currentTrainTarget = unfilled[Math.floor(Math.random() * unfilled.length)];
-
-    const wordEl = document.getElementById('train-target-word');
-    const phoneticEl = document.getElementById('train-target-phonetic');
-    const balloonWrapper = document.getElementById('train-balloon-target');
-
-    if (wordEl && phoneticEl) {
-        wordEl.textContent = currentTrainTarget.ar;
-        phoneticEl.textContent = `(${currentTrainTarget.ok})`;
-
-        if (selectedLanguage === 'arabic') {
-            wordEl.className = 'balloon-word arabic-text';
-        } else {
-            wordEl.className = 'balloon-word';
-        }
-    }
-
-    // Balon zıplama animasyonu
-    if (balloonWrapper) {
-        balloonWrapper.classList.remove('bounce-target');
-        void balloonWrapper.offsetWidth; // Reflow
-        balloonWrapper.classList.add('bounce-target');
-    }
-
-    // Hedef vagonu ekranda görünür kıl
-    const targetIdx = trainWagonItems.indexOf(currentTrainTarget);
-    const targetWagon = document.getElementById(`wagon-${targetIdx}`);
-    if (targetWagon) {
-        targetWagon.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-    }
-
-    // Sesli oku
-    setTimeout(() => {
-        speakWord(currentTrainTarget.ar);
-    }, 400);
-}
-
-function pronounceTrainTarget() {
-    if (!currentTrainTarget) return;
-    playClickSound();
-    speakWord(currentTrainTarget.ar);
-}
-
-function handleWagonClick(index, item, wagonEl) {
-    if (isTrainProcessing || isTrainDeparting) return;
-    if (wagonEl.classList.contains('loaded')) return;
-
-    if (!currentTrainTarget) return;
-
-    if (item.ar === currentTrainTarget.ar) {
-        // Doğru vagon!
-        isTrainProcessing = true;
-        playCorrectSound();
-        playTrainWhistleSound();
-
-        // Vagona yüklendi işaretini ver
-        wagonEl.classList.add('loaded');
-        addStar(1);
-        trainLoadedCount++;
-        updateTrainProgressDisplay();
-        showFeedback("Harika! Vagon yüklendi 🚂✨");
-
-        // Lokomotif sevinsin
-        const loco = document.getElementById('train-locomotive');
-        if (loco) {
-            loco.classList.add('happy-bounce');
-            setTimeout(() => loco.classList.remove('happy-bounce'), 600);
-        }
-
-        if (trainLoadedCount >= trainTotalWagons) {
-            // Tüm vagonlar doldu, tren hareket etsin!
-            setTimeout(() => {
-                animateTrainDeparture();
-            }, 800);
-        } else {
-            setTimeout(() => {
-                setNextTrainTarget();
-                isTrainProcessing = false;
-            }, 1200);
-        }
-    } else {
-        // Yanlış vagon
-        playWrongSound();
-        wagonEl.classList.add('shake');
-        setTimeout(() => wagonEl.classList.remove('shake'), 400);
-        showFeedback("Başka bir vagonu dene! 😊");
-    }
-}
-
-function animateTrainDeparture() {
-    isTrainDeparting = true;
-    playCelebrationSound();
-    playTrainWhistleSound();
-    showConfetti();
-    showFeedback("Bütün vagonlar doldu! Tren kalkıyor! 🚂💨");
-
-    const convoy = document.getElementById('train-convoy');
-    if (convoy) {
-        convoy.classList.add('departing');
-    }
-
-    setTimeout(() => {
-        showGameComplete();
-    }, 2800);
 }
 
 
