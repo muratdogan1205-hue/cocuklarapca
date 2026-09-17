@@ -111,14 +111,41 @@ const arabicWords = [
     { ar: 'فرن', ok: 'Furn', tr: 'Fırın', s: 22, e: '♨️' },
 
     // Temel Cümleler (s: 23)
-    { ar: 'مَرْحَبًا! كَيْفَ حَالُكَ؟', ok: 'Merhaba! Keyfe haluk?', tr: 'Merhaba! Nasılsın?', s: 23, e: '💬' },
-    { ar: 'صَبَاحُ الْخَيْرِ!', ok: 'Sabah al-hayr!', tr: 'Günaydın!', s: 23, e: '🌅' },
-    { ar: 'تَصْبَحُ عَلَى خَيْرٍ!', ok: 'Tusbih ala hayr!', tr: 'İyi geceler!', s: 23, e: '🌙' },
-    { ar: 'شُكْرًا لَكَ!', ok: 'Şukran lek!', tr: 'Teşekkür ederim!', s: 23, e: '🙏' },
-    { ar: 'مِنْ فَضْلِكَ!', ok: 'Min fadlik!', tr: 'Lütfen!', s: 23, e: '✨' },
-    { ar: 'مَعَ السَّلاَمَةِ!', ok: 'Mea esselame!', tr: 'Görüşürüz!', s: 23, e: '👋' },
-    { ar: 'اِسْمِي أَلِيف.', ok: 'İsmi Elif.', tr: 'Benim adım Elif.', s: 23, e: '👧' },
-    { ar: 'أَنَا أُحِبُّكَ!', ok: 'Ene uhibbuk!', tr: 'Seni seviyorum!', s: 23, e: '❤️' },
-    { ar: 'أَهْلًا وَسَهْلًا!', ok: 'Ahlen ve sehlen!', tr: 'Hoş geldiniz!', s: 23, e: '🌺' },
-    { ar: 'يَوْمٌ سَعِيدٌ!', ok: 'Yevmun seid!', tr: 'İyi günler!', s: 23, e: '☀️' }
+    // 1. Selamlaşma & Tanışma
+    { ar: 'مَرْحَبًا', ok: 'Merhaban', tr: 'Merhaba', s: 23, e: '👋' },
+    { ar: 'صَبَاحُ الْخَيْرِ', ok: 'Sabahul hayr', tr: 'Günaydın', s: 23, e: '🌅' },
+    { ar: 'تُصْبِحُ عَلَى خَيْرٍ', ok: 'Tusbihu ala hayr', tr: 'İyi geceler', s: 23, e: '🌙' },
+    { ar: 'مَا اسْمُكَ؟', ok: 'Mesmuke?', tr: 'Adın ne?', s: 23, e: '🤔' },
+    { ar: 'اسْمِي إِلِيف', ok: 'İsmi Elif', tr: 'Benim adım Elif', s: 23, e: '👧' },
+    { ar: 'تَشَرَّفْتُ بِمَعْرِفَتِكَ', ok: 'Teşerraftü bi-marifetik', tr: 'Memnun oldum', s: 23, e: '🤝' },
+    { ar: 'كَيْفَ حَالُكَ؟', ok: 'Keyfe haluk?', tr: 'Nasılsın?', s: 23, e: '😊' },
+    { ar: 'أَنَا بِخَيْرٍ، شُكْرًا', ok: 'Ene bihayr, şükran', tr: 'İyiyim, teşekkürler', s: 23, e: '👍' },
+    { ar: 'كَمْ عُمْرُكَ؟', ok: 'Kem umruk?', tr: 'Kaç yaşındasın?', s: 23, e: '🎂' },
+    { ar: 'مِنْ أَيْنَ أَنْتَ؟', ok: 'Min eyne ente?', tr: 'Nerelisin?', s: 23, e: '🌍' },
+    { ar: 'أَرَاكَ لَاحِقًا', ok: 'Erake lahikan', tr: 'Görüşmek üzere', s: 23, e: '🙋' },
+    { ar: 'أَهْلًا وَسَهْلًا', ok: 'Ehlen ve sehlen', tr: 'Hoş geldin', s: 23, e: '🤗' },
+
+    // 2. Nezaket & Günlük İfadeler
+    { ar: 'مِنْ فَضْلِكَ', ok: 'Min fadlik', tr: 'Lütfen', s: 23, e: '🤲' },
+    { ar: 'شُكْرًا لَكَ', ok: 'Şükran lek', tr: 'Teşekkür ederim', s: 23, e: '🙏' },
+    { ar: 'أَنَا آسِفٌ', ok: 'Ene asif', tr: 'Özür dilerim', s: 23, e: '🙇' },
+    { ar: 'نَعَمْ', ok: 'Naam', tr: 'Evet', s: 23, e: '✅' },
+    { ar: 'لَا', ok: 'La', tr: 'Hayır', s: 23, e: '❌' },
+
+    // 3. Okul & Meslekler
+    { ar: 'أَنَا طَالِبٌ', ok: 'Ene talib', tr: 'Ben bir öğrenciyim', s: 23, e: '🎒' },
+    { ar: 'أَنَا مُعَلِّمٌ', ok: 'Ene muallem', tr: 'Ben bir öğretmenim', s: 23, e: '📖' },
+    { ar: 'أَنَا طَبِيبٌ', ok: 'Ene tabib', tr: 'Ben bir doktorum', s: 23, e: '🩺' },
+
+    // 4. Hoşlandığım Şeyler & Hobiler
+    { ar: 'أُحِبُّكَ', ok: 'Uhibbuke', tr: 'Seni seviyorum', s: 23, e: '❤️' },
+    { ar: 'أُحِبُّ اللَّعِبَ', ok: 'Uhibbu\'l-laib', tr: 'Oyun oynamayı severim', s: 23, e: '🎮' },
+    { ar: 'أُحِبُّ الْقِرَاءَةَ', ok: 'Uhibbu\'l-kırae', tr: 'Kitap okumayı severim', s: 23, e: '📚' },
+    { ar: 'أُحِبُّ الرَّسْمَ', ok: 'Uhibbu\'r-rasm', tr: 'Resim yapmayı severim', s: 23, e: '🎨' },
+    { ar: 'أُحِبُّ الْمُثَلَّجَاتِ', ok: 'Uhibbu\'l-müsellecat', tr: 'Dondurmayı severim', s: 23, e: '🍦' },
+
+    // 5. Günlük Durumlar & İhtiyaçlar
+    { ar: 'أَنَا جَائِعٌ', ok: 'Ene cai\'', tr: 'Acıktım', s: 23, e: '😋' },
+    { ar: 'أَنَا عَطْشَانُ', ok: 'Ene atşan', tr: 'Susadım', s: 23, e: '🥛' },
+    { ar: 'أَنَا نَعْسَانُ', ok: 'Ene na\'san', tr: 'Uykum var', s: 23, e: '😴' }
 ];

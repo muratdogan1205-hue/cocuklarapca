@@ -111,14 +111,41 @@ const englishWords = [
     { ar: 'Oven', ok: 'Oven', tr: 'Fırın', s: 22, e: '♨️' },
 
     // Temel Cümleler (s: 23)
-    { ar: 'Hello! How are you?', ok: 'Helou! Hav ar yu?', tr: 'Merhaba! Nasılsın?', s: 23, e: '💬' },
-    { ar: 'Good morning!', ok: 'Gud mornink!', tr: 'Günaydın!', s: 23, e: '🌅' },
-    { ar: 'Good night!', ok: 'Gud nayt!', tr: 'İyi geceler!', s: 23, e: '🌙' },
-    { ar: 'Thank you!', ok: 'Tenk yu!', tr: 'Teşekkür ederim!', s: 23, e: '🙏' },
-    { ar: 'Please!', ok: 'Pliz!', tr: 'Lütfen!', s: 23, e: '✨' },
-    { ar: 'Goodbye!', ok: 'Gudbay!', tr: 'Görüşürüz!', s: 23, e: '👋' },
-    { ar: 'My name is Elif.', ok: 'May neym iz Elif.', tr: 'Benim adım Elif.', s: 23, e: '👧' },
-    { ar: 'I love you!', ok: 'Ay lav yu!', tr: 'Seni seviyorum!', s: 23, e: '❤️' },
-    { ar: 'Welcome!', ok: 'Velkam!', tr: 'Hoş geldiniz!', s: 23, e: '🌺' },
-    { ar: 'Have a nice day!', ok: 'Hev e nays dey!', tr: 'İyi günler!', s: 23, e: '☀️' }
+    // 1. Selamlaşma & Tanışma
+    { ar: 'Hello', ok: 'Helo', tr: 'Merhaba', s: 23, e: '👋' },
+    { ar: 'Good morning', ok: 'Gud morning', tr: 'Günaydın', s: 23, e: '🌅' },
+    { ar: 'Good night', ok: 'Gud nayt', tr: 'İyi geceler', s: 23, e: '🌙' },
+    { ar: 'What is your name?', ok: 'Vat iz yor neym?', tr: 'Adın ne?', s: 23, e: '🤔' },
+    { ar: 'My name is Elif', ok: 'May neym iz Elif', tr: 'Benim adım Elif', s: 23, e: '👧' },
+    { ar: 'Nice to meet you', ok: 'Nays tu mit yu', tr: 'Memnun oldum', s: 23, e: '🤝' },
+    { ar: 'How are you?', ok: 'Hav ar yu?', tr: 'Nasılsın?', s: 23, e: '😊' },
+    { ar: 'I am fine, thank you', ok: 'Ay em fayn, tenk yu', tr: 'İyiyim, teşekkürler', s: 23, e: '👍' },
+    { ar: 'How old are you?', ok: 'Hav old ar yu?', tr: 'Kaç yaşındasın?', s: 23, e: '🎂' },
+    { ar: 'Where are you from?', ok: 'Ver ar yu fram?', tr: 'Nerelisin?', s: 23, e: '🌍' },
+    { ar: 'See you soon', ok: 'Si yu sun', tr: 'Görüşmek üzere', s: 23, e: '🙋' },
+    { ar: 'Welcome', ok: 'Velkam', tr: 'Hoş geldin', s: 23, e: '🤗' },
+
+    // 2. Nezaket & Günlük İfadeler
+    { ar: 'Please', ok: 'Pliz', tr: 'Lütfen', s: 23, e: '🤲' },
+    { ar: 'Thank you', ok: 'Tenk yu', tr: 'Teşekkür ederim', s: 23, e: '🙏' },
+    { ar: 'I am sorry', ok: 'Ay em sori', tr: 'Özür dilerim', s: 23, e: '🙇' },
+    { ar: 'Yes', ok: 'Yes', tr: 'Evet', s: 23, e: '✅' },
+    { ar: 'No', ok: 'No', tr: 'Hayır', s: 23, e: '❌' },
+
+    // 3. Okul & Meslekler
+    { ar: 'I am a student', ok: 'Ay em e styudınt', tr: 'Ben bir öğrenciyim', s: 23, e: '🎒' },
+    { ar: 'I am a teacher', ok: 'Ay em e tiçır', tr: 'Ben bir öğretmenim', s: 23, e: '📖' },
+    { ar: 'I am a doctor', ok: 'Ay em e doktır', tr: 'Ben bir doktorum', s: 23, e: '🩺' },
+
+    // 4. Hoşlandığım Şeyler & Hobiler
+    { ar: 'I love you', ok: 'Ay lav yu', tr: 'Seni seviyorum', s: 23, e: '❤️' },
+    { ar: 'I like playing games', ok: 'Ay layk pleying geymz', tr: 'Oyun oynamayı severim', s: 23, e: '🎮' },
+    { ar: 'I like reading books', ok: 'Ay layk riding buks', tr: 'Kitap okumayı severim', s: 23, e: '📚' },
+    { ar: 'I like drawing', ok: 'Ay layk droving', tr: 'Resim yapmayı severim', s: 23, e: '🎨' },
+    { ar: 'I like ice cream', ok: 'Ay layk ays krim', tr: 'Dondurmayı severim', s: 23, e: '🍦' },
+
+    // 5. Günlük Durumlar & İhtiyaçlar
+    { ar: 'I am hungry', ok: 'Ay em hangri', tr: 'Acıktım', s: 23, e: '😋' },
+    { ar: 'I am thirsty', ok: 'Ay em törsti', tr: 'Susadım', s: 23, e: '🥛' },
+    { ar: 'I am sleepy', ok: 'Ay em slipi', tr: 'Uykum var', s: 23, e: '😴' }
 ];
