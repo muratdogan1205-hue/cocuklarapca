@@ -1832,6 +1832,12 @@ h1 {
     border: 5px solid rgba(255, 255, 255, 0.4);
     position: relative;
     text-align: center;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.category-card-fun * {
+    pointer-events: none;
 }
 
 .category-card-fun:active {
@@ -1881,6 +1887,14 @@ h1 {
 
 .style-shapes {
     background: linear-gradient(135deg, #26A69A, #00695C);
+}
+
+.style-kitchen {
+    background: linear-gradient(135deg, #FF7043, #D84315);
+}
+
+.style-sentences {
+    background: linear-gradient(135deg, #AB47BC, #5E35B1);
 }
 
 .style-kitchen {

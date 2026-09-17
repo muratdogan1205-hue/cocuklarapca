@@ -108,5 +108,17 @@ const arabicWords = [
     { ar: 'مقلاة', ok: 'Mikla', tr: 'Tava', s: 22, e: '🍳' },
     { ar: 'وعاء', ok: 'Vi\'a', tr: 'Kase', s: 22, e: '🥣' },
     { ar: 'فنجان', ok: 'Fincan', tr: 'Fincan', s: 22, e: '☕' },
-    { ar: 'فرن', ok: 'Furn', tr: 'Fırın', s: 22, e: '♨️' }
+    { ar: 'فرن', ok: 'Furn', tr: 'Fırın', s: 22, e: '♨️' },
+
+    // Temel Cümleler (s: 23)
+    { ar: 'مَرْحَبًا! كَيْفَ حَالُكَ؟', ok: 'Merhaba! Keyfe haluk?', tr: 'Merhaba! Nasılsın?', s: 23, e: '💬' },
+    { ar: 'صَبَاحُ الْخَيْرِ!', ok: 'Sabah al-hayr!', tr: 'Günaydın!', s: 23, e: '🌅' },
+    { ar: 'تَصْبَحُ عَلَى خَيْرٍ!', ok: 'Tusbih ala hayr!', tr: 'İyi geceler!', s: 23, e: '🌙' },
+    { ar: 'شُكْرًا لَكَ!', ok: 'Şukran lek!', tr: 'Teşekkür ederim!', s: 23, e: '🙏' },
+    { ar: 'مِنْ فَضْلِكَ!', ok: 'Min fadlik!', tr: 'Lütfen!', s: 23, e: '✨' },
+    { ar: 'مَعَ السَّلاَمَةِ!', ok: 'Mea esselame!', tr: 'Görüşürüz!', s: 23, e: '👋' },
+    { ar: 'اِسْمِي أَلِيف.', ok: 'İsmi Elif.', tr: 'Benim adım Elif.', s: 23, e: '👧' },
+    { ar: 'أَنَا أُحِبُّكَ!', ok: 'Ene uhibbuk!', tr: 'Seni seviyorum!', s: 23, e: '❤️' },
+    { ar: 'أَهْلًا وَسَهْلًا!', ok: 'Ahlen ve sehlen!', tr: 'Hoş geldiniz!', s: 23, e: '🌺' },
+    { ar: 'يَوْمٌ سَعِيدٌ!', ok: 'Yevmun seid!', tr: 'İyi günler!', s: 23, e: '☀️' }
 ];

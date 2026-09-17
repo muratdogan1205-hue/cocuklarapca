@@ -108,5 +108,17 @@ const englishWords = [
     { ar: 'Pan', ok: 'Pen', tr: 'Tava', s: 22, e: '🍳' },
     { ar: 'Bowl', ok: 'Boul', tr: 'Kase', s: 22, e: '🥣' },
     { ar: 'Cup', ok: 'Kap', tr: 'Fincan', s: 22, e: '☕' },
-    { ar: 'Oven', ok: 'Oven', tr: 'Fırın', s: 22, e: '♨️' }
+    { ar: 'Oven', ok: 'Oven', tr: 'Fırın', s: 22, e: '♨️' },
+
+    // Temel Cümleler (s: 23)
+    { ar: 'Hello! How are you?', ok: 'Helou! Hav ar yu?', tr: 'Merhaba! Nasılsın?', s: 23, e: '💬' },
+    { ar: 'Good morning!', ok: 'Gud mornink!', tr: 'Günaydın!', s: 23, e: '🌅' },
+    { ar: 'Good night!', ok: 'Gud nayt!', tr: 'İyi geceler!', s: 23, e: '🌙' },
+    { ar: 'Thank you!', ok: 'Tenk yu!', tr: 'Teşekkür ederim!', s: 23, e: '🙏' },
+    { ar: 'Please!', ok: 'Pliz!', tr: 'Lütfen!', s: 23, e: '✨' },
+    { ar: 'Goodbye!', ok: 'Gudbay!', tr: 'Görüşürüz!', s: 23, e: '👋' },
+    { ar: 'My name is Elif.', ok: 'May neym iz Elif.', tr: 'Benim adım Elif.', s: 23, e: '👧' },
+    { ar: 'I love you!', ok: 'Ay lav yu!', tr: 'Seni seviyorum!', s: 23, e: '❤️' },
+    { ar: 'Welcome!', ok: 'Velkam!', tr: 'Hoş geldiniz!', s: 23, e: '🌺' },
+    { ar: 'Have a nice day!', ok: 'Hev e nays dey!', tr: 'İyi günler!', s: 23, e: '☀️' }
 ];

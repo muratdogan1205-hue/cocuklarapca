@@ -430,7 +430,8 @@ const CATEGORY_STAGES = {
     family: [3],      // Aile
     numbers: [2],     // Sayılar
     shapes: [21],     // Şekiller
-    kitchen: [22]     // Mutfak
+    kitchen: [22],    // Mutfak
+    sentences: [23]   // Cümleler
 };
 
 const CATEGORY_NAMES = {
@@ -440,7 +441,8 @@ const CATEGORY_NAMES = {
     family: '👨‍👩‍👧 Aile',
     numbers: '🔢 Sayılar',
     shapes: '🔺 Şekiller',
-    kitchen: '🥣 Mutfak'
+    kitchen: '🥣 Mutfak',
+    sentences: '💬 Cümleler'
 };
 
 // --- YÜKSEK ÇÖZÜNÜRLÜKLÜ GÖRSEL VE İKON SİSTEMİ ---
@@ -583,12 +585,24 @@ function renderImageElement(item) {
                     <div style="margin-bottom:8px;"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f46a.svg" style="width:65px;height:65px;filter:drop-shadow(0 4px 4px rgba(0,0,0,0.3));"></div>
                     <div style="position:absolute; bottom:0; width:100%; padding:3px 0; text-align:center; color:white; font-size:0.8rem; font-weight:bold; background:#BF360C; font-family:'Fredoka', sans-serif;">👨‍👩‍👧‍👦 AİLE</div>
                  </div>`
+    // 5. TEMEL CÜMLELER (Renkli Konuşma Balonu Kartları)
+    const sentenceMap = {
+        'Merhaba! Nasılsın?': `<div style="background: linear-gradient(135deg, #42A5F5, #1E88E5); border: 3px solid #1565C0; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:5px; box-shadow:0 4px 10px rgba(0,0,0,0.15);"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f4ac.svg" style="width:50px;height:50px;margin-bottom:4px;"><span style="color:white; font-size:0.75rem; font-weight:bold; text-align:center; font-family:'Fredoka', sans-serif;">💬 MERHABA</span></div>`,
+        'Günaydın!': `<div style="background: linear-gradient(135deg, #FFB74D, #F57C00); border: 3px solid #E65100; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:5px; box-shadow:0 4px 10px rgba(0,0,0,0.15);"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f305.svg" style="width:50px;height:50px;margin-bottom:4px;"><span style="color:white; font-size:0.75rem; font-weight:bold; text-align:center; font-family:'Fredoka', sans-serif;">🌅 GÜNAYDIN</span></div>`,
+        'İyi geceler!': `<div style="background: linear-gradient(135deg, #5C6BC0, #283593); border: 3px solid #1A237E; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:5px; box-shadow:0 4px 10px rgba(0,0,0,0.15);"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f31c.svg" style="width:50px;height:50px;margin-bottom:4px;"><span style="color:white; font-size:0.75rem; font-weight:bold; text-align:center; font-family:'Fredoka', sans-serif;">🌙 İYİ GECELER</span></div>`,
+        'Teşekkür ederim!': `<div style="background: linear-gradient(135deg, #EC407A, #AD1457); border: 3px solid #880E4F; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:5px; box-shadow:0 4px 10px rgba(0,0,0,0.15);"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f64f.svg" style="width:50px;height:50px;margin-bottom:4px;"><span style="color:white; font-size:0.75rem; font-weight:bold; text-align:center; font-family:'Fredoka', sans-serif;">🙏 TEŞEKKÜRLER</span></div>`,
+        'Lütfen!': `<div style="background: linear-gradient(135deg, #AB47BC, #6A1B9A); border: 3px solid #4A148C; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:5px; box-shadow:0 4px 10px rgba(0,0,0,0.15);"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/2728.svg" style="width:50px;height:50px;margin-bottom:4px;"><span style="color:white; font-size:0.75rem; font-weight:bold; text-align:center; font-family:'Fredoka', sans-serif;">✨ LÜTFEN</span></div>`,
+        'Görüşürüz!': `<div style="background: linear-gradient(135deg, #26A69A, #00695C); border: 3px solid #004D40; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:5px; box-shadow:0 4px 10px rgba(0,0,0,0.15);"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f44b.svg" style="width:50px;height:50px;margin-bottom:4px;"><span style="color:white; font-size:0.75rem; font-weight:bold; text-align:center; font-family:'Fredoka', sans-serif;">👋 GÖRÜŞÜRÜZ</span></div>`,
+        'Benim adım Elif.': `<div style="background: linear-gradient(135deg, #FF7043, #D84315); border: 3px solid #BF360C; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:5px; box-shadow:0 4px 10px rgba(0,0,0,0.15);"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f467.svg" style="width:50px;height:50px;margin-bottom:4px;"><span style="color:white; font-size:0.75rem; font-weight:bold; text-align:center; font-family:'Fredoka', sans-serif;">👧 ADIM ELİF</span></div>`,
+        'Seni seviyorum!': `<div style="background: linear-gradient(135deg, #EF5350, #C62828); border: 3px solid #B71C1C; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:5px; box-shadow:0 4px 10px rgba(0,0,0,0.15);"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/2764.svg" style="width:50px;height:50px;margin-bottom:4px;"><span style="color:white; font-size:0.75rem; font-weight:bold; text-align:center; font-family:'Fredoka', sans-serif;">❤️ SEVİYORUM</span></div>`,
+        'Hoş geldiniz!': `<div style="background: linear-gradient(135deg, #66BB6A, #2E7D32); border: 3px solid #1B5E20; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:5px; box-shadow:0 4px 10px rgba(0,0,0,0.15);"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f33a.svg" style="width:50px;height:50px;margin-bottom:4px;"><span style="color:white; font-size:0.75rem; font-weight:bold; text-align:center; font-family:'Fredoka', sans-serif;">🌺 HOŞ GELDİNİZ</span></div>`,
+        'İyi günler!': `<div style="background: linear-gradient(135deg, #FFEE58, #FBC02D); border: 3px solid #F57F17; width:90%; height:90%; margin:5% auto; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:5px; box-shadow:0 4px 10px rgba(0,0,0,0.15);"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/2600.svg" style="width:50px;height:50px;margin-bottom:4px;"><span style="color:#333; font-size:0.75rem; font-weight:bold; text-align:center; font-family:'Fredoka', sans-serif;">☀️ İYİ GÜNLER</span></div>`
     };
-    if (familyMap[item.tr]) {
-        return familyMap[item.tr];
+    if (sentenceMap[item.tr]) {
+        return sentenceMap[item.tr];
     }
 
-    // 4. TWEMOJI HIGH-RES VECTOR SVG (Hayvanlar, Meyveler, Aile, Mutfak)
+    // 6. TWEMOJI HIGH-RES VECTOR SVG (Hayvanlar, Meyveler, Aile, Mutfak)
     const twemojiUrl = getTwemojiUrl(item.e);
     if (twemojiUrl) {
         return `<img src="${twemojiUrl}" alt="${item.tr}" class="word-img" onerror="this.outerHTML='<div class=\\'emoji\\'>${item.e}</div>'" style="width:100%; height:100%; object-fit:contain; filter: drop-shadow(0 5px 8px rgba(0,0,0,0.15)); transition: transform 0.2s;">`;
@@ -599,15 +613,28 @@ function renderImageElement(item) {
 
 function selectCategory(category) {
     playClickSound();
+    if (!category) return;
+    
     currentCategory = category;
-    const stages = CATEGORY_STAGES[category];
+    const stages = CATEGORY_STAGES[category] || [];
 
-    // Kategorideki tüm kelimeleri topla - doğrudan seçilen dilden
-    const wordsSource = LANGUAGE_CONFIG[selectedLanguage].words();
-    showFeedback(category + " (" + selectedLanguage + ")"); // DEBUG
+    if (!selectedLanguage) {
+        selectedLanguage = 'arabic';
+    }
+
+    let wordsSource = [];
+    if (typeof LANGUAGE_CONFIG !== 'undefined' && LANGUAGE_CONFIG[selectedLanguage] && typeof LANGUAGE_CONFIG[selectedLanguage].words === 'function') {
+        wordsSource = LANGUAGE_CONFIG[selectedLanguage].words();
+    } else {
+        wordsSource = (selectedLanguage === 'english') ? englishWords : arabicWords;
+    }
+
     currentStageWords = wordsSource.filter(w => stages.includes(w.s));
 
-    document.getElementById('dashboard-title').textContent = CATEGORY_NAMES[category];
+    const titleEl = document.getElementById('dashboard-title');
+    if (titleEl) {
+        titleEl.textContent = CATEGORY_NAMES[category] || category;
+    }
     showScreen('stage-dashboard');
 }
 

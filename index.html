@@ -4,9 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#87CEEB">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>🌺ELİF İNCİ'NİN DİLLER BAHÇESİ 🌺</title>
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch(() => {});
+            });
+        }
+    </script>
 </head>
 
 <body>
@@ -128,6 +139,12 @@
                 <div class="category-card-fun style-kitchen" onclick="selectCategory('kitchen')">
                     <div class="fun-icon"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f963.svg" style="width:60px; height:60px;" alt="Mutfak"></div>
                     <span class="label">Mutfak</span>
+                </div>
+
+                <!-- Cümleler -->
+                <div class="category-card-fun style-sentences" onclick="selectCategory('sentences')">
+                    <div class="fun-icon"><img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f4ac.svg" style="width:60px; height:60px;" alt="Cümleler"></div>
+                    <span class="label">Cümleler</span>
                 </div>
 
             </div>
