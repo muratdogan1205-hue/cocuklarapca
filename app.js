@@ -102,53 +102,52 @@ function prepareLanguageSelection(lang, event) {
 }
 
 function selectLanguage(lang, event) {
-    playClickSound();
+    try {
+        playClickSound();
+    } catch (e) { }
 
-    // Balon patlatma animasyonu
-    if (event) {
-        const wrapper = event.currentTarget;
-        const balloonBody = wrapper.querySelector('.balloon-body');
-        const balloonString = wrapper.querySelector('.balloon-string');
+    // Güvenli element tespiti (event, this veya doğrudan arama)
+    let wrapper = null;
+    try {
+        if (event) {
+            if (event.currentTarget) {
+                wrapper = event.currentTarget;
+            } else if (event.target && event.target.closest) {
+                wrapper = event.target.closest('.balloon-wrapper');
+            } else if (event.nodeType) {
+                wrapper = event;
+            }
+        }
+        if (!wrapper) {
+            wrapper = document.querySelector(`.balloon-wrapper[onclick*="${lang}"]`);
+        }
+    } catch (e) { }
 
-        if (balloonBody) {
-            // Balon öne çıksın - büyüsün
-            balloonBody.style.transition = 'transform 0.4s';
-            balloonBody.style.transform = 'scale(1.4)';
-            balloonBody.style.zIndex = '100';
-            if (balloonString) balloonString.style.display = 'none';
+    if (wrapper) {
+        try {
+            const balloonBody = wrapper.querySelector('.balloon-body');
+            if (balloonBody) {
+                balloonBody.style.transition = 'transform 0.25s ease';
+                balloonBody.style.transform = 'scale(1.25)';
+            }
             playCorrectSound();
             showConfetti();
+        } catch (e) { }
 
-            // Yazı öne çıksın - büyük ve belirgin
-            const content = wrapper.querySelector('.balloon-content');
-            if (content) {
-                content.style.transition = 'transform 0.4s';
-                content.style.transform = 'scale(1.8)';
-                content.style.position = 'relative';
-                content.style.zIndex = '100';
-                content.style.textShadow = '2px 2px 8px rgba(0,0,0,0.5)';
-            }
-
-            setTimeout(() => {
-                // Her şeyi eski haline getir
-                balloonBody.style.transition = '';
-                balloonBody.style.transform = '';
-                balloonBody.style.zIndex = '';
-                balloonBody.style.border = '';
-                if (balloonString) balloonString.style.display = '';
-                if (content) {
-                    content.style.transition = '';
-                    content.style.transform = '';
-                    content.style.position = '';
-                    content.style.zIndex = '';
-                    content.style.textShadow = '';
+        // Anında ve akıcı geçiş (1.5 sn bekleme yerine 300ms)
+        setTimeout(() => {
+            try {
+                const balloonBody = wrapper.querySelector('.balloon-body');
+                if (balloonBody) {
+                    balloonBody.style.transition = '';
+                    balloonBody.style.transform = '';
                 }
-                doSelectLanguage(lang);
-            }, 1500);
-            return;
-        }
+            } catch (e) { }
+            doSelectLanguage(lang);
+        }, 300);
+    } else {
+        doSelectLanguage(lang);
     }
-    doSelectLanguage(lang);
 }
 
 function doSelectLanguage(lang) {

@@ -1641,7 +1641,13 @@ h1 {
 .balloon-wrapper {
     position: relative;
     cursor: pointer;
-    transition: transform 0.3s;
+    transition: transform 0.2s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.balloon-wrapper:active {
+    transform: scale(0.95);
 }
 
 .balloon-body {
